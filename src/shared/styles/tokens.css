@@ -1,0 +1,106 @@
+:root {
+  /* Brand colors */
+  --color-primary-50: #eef4ff;
+  --color-primary-100: #d9e6ff;
+  --color-primary-200: #bcd3ff;
+  --color-primary-300: #8eb7ff;
+  --color-primary-400: #5991ff;
+  --color-primary-500: #2f6bfb;
+  --color-primary-600: #2044bc;
+  --color-primary-700: #1b369c;
+  --color-primary-800: #182d7d;
+  --color-primary-900: #182865;
+  --color-primary-950: #101a40;
+
+  --blue: var(--color-primary-600);
+  --blue-hover: var(--color-primary-700);
+  --blue-light: var(--color-primary-50);
+  --navy: #10294b;
+  --navy-dark: #0d1b2e;
+  --navy-muted: #64748b;
+
+  /* Surfaces & Backgrounds */
+  --surface-canvas: #f8fafc;
+  --surface-card: #ffffff;
+  --surface-subtle: #f1f5f9;
+  --surface-hover: #f1f5fa;
+  --surface: #f1f5f9;
+
+  /* Borders & Lines */
+  --line-subtle: #edf2f7;
+  --line: #dfe7f0;
+  --line-strong: #cbd5e1;
+
+  /* Semantic Status Colors */
+  --color-success-bg: #ecfdf5;
+  --color-success-text: #065f46;
+  --color-success-border: #a7f3d0;
+  
+  --color-warning-bg: #fffbeb;
+  --color-warning-text: #92400e;
+  --color-warning-border: #fde68a;
+
+  --color-danger-bg: #fef2f2;
+  --color-danger-text: #991b1b;
+  --color-danger-border: #fecaca;
+
+  --color-info-bg: #eff6ff;
+  --color-info-text: #1e40af;
+  --color-info-border: #bfdbfe;
+
+  --color-purple-bg: #faf5ff;
+  --color-purple-text: #6b21a8;
+  --color-purple-border: #e9d5ff;
+
+  /* Typography */
+  --font-family-base: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-size-xs: 0.75rem;    /* 12px */
+  --font-size-sm: 0.8125rem;  /* 13px */
+  --font-size-base: 0.875rem; /* 14px */
+  --font-size-md: 0.9375rem;  /* 15px */
+  --font-size-lg: 1.0625rem;  /* 17px */
+  --font-size-xl: 1.25rem;    /* 20px */
+  --font-size-2xl: 1.5rem;    /* 24px */
+  --font-size-3xl: 1.875rem;  /* 30px */
+
+  /* Shadows */
+  --shadow-xs: 0 1px 2px 0 rgba(16, 41, 75, 0.05);
+  --shadow-sm: 0 2px 4px -1px rgba(16, 41, 75, 0.06), 0 1px 2px -1px rgba(16, 41, 75, 0.04);
+  --shadow-md: 0 4px 12px -2px rgba(16, 41, 75, 0.08), 0 2px 6px -2px rgba(16, 41, 75, 0.04);
+  --shadow-lg: 0 10px 25px -3px rgba(16, 41, 75, 0.1), 0 4px 10px -2px rgba(16, 41, 75, 0.04);
+  --shadow-xl: 0 20px 35px -5px rgba(16, 41, 75, 0.15), 0 8px 16px -4px rgba(16, 41, 75, 0.06);
+
+  /* Radius */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --radius-full: 9999px;
+
+  /* Transitions */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-smooth: 300ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html.dark {
+  --navy: #f8fafc;
+  --navy-dark: #ffffff;
+  --navy-muted: #94a3b8;
+
+  --surface-canvas: #090e17;
+  --surface-card: #0f172a;
+  --surface-subtle: #1e293b;
+  --surface-hover: #334155;
+  --surface: #0f172a;
+
+  --line-subtle: #1e293b;
+  --line: #334155;
+  --line-strong: #475569;
+
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
+  --shadow-sm: 0 2px 4px -1px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 12px -2px rgba(0, 0, 0, 0.6);
+  --shadow-lg: 0 10px 25px -3px rgba(0, 0, 0, 0.7);
+}
+
