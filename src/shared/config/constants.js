@@ -4,8 +4,9 @@
  */
 
 export const APP_CONFIG = {
-  NAME: 'SkillHub',
-  TAGLINE: 'Học tập, tra cứu, luyện tập và đánh giá năng lực',
+  NAME: 'Đánh giá năng lực MES',
+  TAGLINE: 'Học · Luyện · Thi — Goldsun Packaging',
+  COMPANY: 'Goldsun Packaging',
   DEFAULT_TIMEZONE: 'Asia/Ho_Chi_Minh',
   API_PREFIX: '/api/v1',
   PAGE_SIZE_DEFAULT: 10,

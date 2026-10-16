@@ -1,67 +1,10 @@
 import React from 'react';
 
-export default function Tabs({
-  tabs = [],
-  activeTab,
-  onChange,
-  className = '',
-}) {
-  return (
-    <div
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: '6px',
-        borderBottom: '1px solid var(--line)',
-        paddingBottom: '2px',
-        marginBottom: '20px',
-        overflowX: 'auto',
-      }}
-      className={`ui-tabs ${className}`}
-      role="tablist"
-    >
-      {tabs.map((tab) => {
-        const isActive = activeTab === tab.id;
-        return (
-          <button
-            key={tab.id}
-            role="tab"
-            aria-selected={isActive}
-            onClick={() => onChange(tab.id)}
-            style={{
-              padding: '8px 16px',
-              fontSize: '13px',
-              fontWeight: isActive ? '700' : '500',
-              color: isActive ? 'var(--color-primary-600)' : 'var(--navy-muted)',
-              borderBottom: isActive ? '2px solid var(--color-primary-600)' : '2px solid transparent',
-              background: 'transparent',
-              borderRadius: '6px 6px 0 0',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '8px',
-              transition: 'all 0.15s ease',
-              whiteSpace: 'nowrap',
-            }}
-          >
-            {tab.icon && <tab.icon size={16} />}
-            <span>{tab.label}</span>
-            {tab.count != null && (
-              <span
-                style={{
-                  background: isActive ? 'var(--color-primary-50)' : 'var(--surface-subtle)',
-                  color: isActive ? 'var(--color-primary-600)' : 'var(--navy-muted)',
-                  fontSize: '11px',
-                  fontWeight: '600',
-                  padding: '2px 7px',
-                  borderRadius: '999px',
-                }}
-              >
-                {tab.count}
-              </span>
-            )}
-          </button>
-        );
-      })}
-    </div>
-  );
+export default function Tabs({ tabs = [], activeTab, onChange, className = '' }) {
+  return <div role="tablist" className={`ui-tabs flex items-center gap-5 overflow-x-auto ${className}`}>
+    {tabs.map(tab => <button key={tab.id} type="button" role="tab" aria-selected={activeTab === tab.id} onClick={() => onChange(tab.id)} className={`inline-flex shrink-0 items-center gap-2 border-b-2 py-2.5 text-xs font-medium whitespace-nowrap ${activeTab === tab.id ? 'border-emerald-600 text-emerald-700 dark:text-emerald-400 font-semibold' : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'}`}>
+      {tab.icon && <tab.icon size={16} />}<span>{tab.label}</span>
+      {tab.count != null && <span className="rounded-full bg-slate-100 dark:bg-slate-800 px-2 py-0.5 text-[11px]">{tab.count}</span>}
+    </button>)}
+  </div>;
 }

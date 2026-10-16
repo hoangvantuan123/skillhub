@@ -10,16 +10,7 @@ import Button from '../../../shared/ui/Button';
 import Badge from '../../../shared/ui/Badge';
 import Modal from '../../../shared/ui/Modal';
 import InteractiveHmiSimulation from '../../questions/components/InteractiveHmiSimulation';
-import {
-  Clock,
-  Wifi,
-  WifiOff,
-  CheckCircle2,
-  AlertTriangle,
-  ChevronLeft,
-  ChevronRight,
-  Send,
-} from 'lucide-react';
+import { Clock, Wifi, WifiOff, CheckCircle2, ChevronLeft, ChevronRight, Send } from 'lucide-react';
 
 export default function AttemptPage() {
   const navigate = useNavigate();

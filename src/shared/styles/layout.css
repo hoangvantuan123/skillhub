@@ -25,7 +25,7 @@
 }
 
 .brand {
-  height: 52px;
+  height: 46px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -35,16 +35,16 @@
 .brand-mark {
   display: grid;
   place-items: center;
-  width: 32px;
-  height: 32px;
-  font-size: 19px;
+  width: 28px;
+  height: 28px;
+  font-size: 16px;
   font-weight: 900;
   font-style: italic;
   color: #025c27;
   background: #ffffff;
-  border-radius: 8px 8px 8px 3px;
+  border-radius: 7px 7px 7px 3px;
   transform: rotate(-6deg);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   transition: transform var(--transition-normal);
 }
 
@@ -56,8 +56,8 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-  gap: 4px;
-  padding: 4px 0;
+  gap: 10px;
+  padding: 8px 0;
   align-items: center;
   overflow-y: auto;
   overflow-x: visible;
@@ -68,43 +68,130 @@
   display: none;
 }
 
-/* Nav Item with compact modern size */
+/* Nav Item with compact modern size, smooth tactile interaction */
 .nav-item {
-  width: 38px;
-  height: 38px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
-  color: rgba(255, 255, 255, 0.78);
-  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
-  border-radius: 10px;
+  color: rgba(255, 255, 255, 0.72);
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  border-radius: 8px;
   flex-shrink: 0;
+  text-decoration: none;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .nav-item:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.14);
   color: #ffffff;
   transform: translateY(-1px);
 }
 
-/* Active Nav Item */
+/* Micro-interaction: tactile bounce when clicked */
+.nav-item:active {
+  transform: scale(0.90);
+  transition-duration: 0.06s;
+}
+
+/* Mouse click focus removal - NO harsh browser blue outline! */
+.nav-item:focus {
+  outline: none;
+}
+
+.nav-item:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Keyboard focus accessible indicator */
+.nav-item:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.9);
+  outline-offset: 2px;
+}
+
+/* Active Nav Item - High contrast, rounded pill, with rail indicator bar */
 .nav-item.active {
   background: #ffffff;
   color: #025c27;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
-  border-radius: 10px;
-  transform: scale(1.02);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.14), 0 1px 2px rgba(0, 0, 0, 0.06);
+  border-radius: 8px;
+  transform: none;
 }
 
 .nav-item.active:hover {
   background: #ffffff;
   color: #025c27;
+  transform: translateY(-1px);
 }
 
-/* Desktop rail: Tooltips are handled cleanly via native title attribute */
+.nav-item.active:active {
+  transform: scale(0.92);
+}
+
+/* Sleek active indicator bar on the left edge of sidebar */
+.nav-item.active::before {
+  content: '';
+  position: absolute;
+  left: -17px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 18px;
+  background: #ffffff;
+  border-radius: 0 3px 3px 0;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+  pointer-events: none;
+  transition: height 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Desktop rail: Tooltips are handled cleanly via sleek floating tooltips */
 .nav-label {
   display: none;
+}
+
+/* Sleek floating tooltip for sidebar rail on desktop */
+.sidebar-floating-tooltip {
+  position: fixed;
+  left: 70px;
+  transform: translateY(-50%);
+  background: #0f172a;
+  color: #f8fafc;
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  padding: 4px 9px;
+  border-radius: 6px;
+  white-space: nowrap;
+  pointer-events: none;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28), 0 1px 3px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  z-index: 1000;
+  animation: tooltipFadeIn 0.12s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sidebar-floating-tooltip::before {
+  content: '';
+  position: absolute;
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  border-width: 4px;
+  border-style: solid;
+  border-color: transparent #0f172a transparent transparent;
+}
+
+@keyframes tooltipFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-50%) translateX(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+  }
 }
 
 /* Sidebar Bottom Controls (Integrated Header utilities) */
@@ -112,66 +199,111 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
-  padding: 6px 0 10px;
+  gap: 8px;
+  padding: 10px 0 14px;
   border-top: 1px solid rgba(255, 255, 255, 0.14);
   width: 100%;
   flex-shrink: 0;
 }
 
 .sidebar-util-btn {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: rgba(255, 255, 255, 0.78);
-  transition: all 0.15s ease;
+  position: relative;
+  color: rgba(255, 255, 255, 0.72);
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
   background: transparent;
   cursor: pointer;
   border: none;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .sidebar-util-btn:hover {
-  background: rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.14);
   color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.sidebar-util-btn:active {
+  transform: scale(0.90);
+  transition-duration: 0.06s;
+}
+
+.sidebar-util-btn:focus {
+  outline: none;
+}
+
+.sidebar-util-btn:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.sidebar-util-btn:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.9);
+  outline-offset: 2px;
 }
 
 .sidebar-util-btn.active {
   background: #ffffff;
   color: #025c27;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.14);
 }
 
 .sidebar-avatar-btn {
-  width: 34px;
-  height: 34px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   display: grid;
   place-items: center;
-  background: rgba(255, 255, 255, 0.15);
+  position: relative;
+  background: rgba(255, 255, 255, 0.16);
   color: #ffffff;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
   padding: 0;
-  border: none;
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
+  outline: none;
 }
 
 .sidebar-avatar-btn:hover {
   background: rgba(255, 255, 255, 0.28);
-  transform: scale(1.05);
+  border-color: rgba(255, 255, 255, 0.75);
+  transform: scale(1.06);
+}
+
+.sidebar-avatar-btn:active {
+  transform: scale(0.90);
+  transition-duration: 0.06s;
+}
+
+.sidebar-avatar-btn:focus {
+  outline: none;
+}
+
+.sidebar-avatar-btn:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.sidebar-avatar-btn:focus-visible,
+.sidebar-avatar-btn.active-avatar {
+  border-color: #ffffff;
+  box-shadow: 0 0 0 2px #025c27, 0 0 0 4px rgba(255, 255, 255, 0.9);
 }
 
 .avatar-circle {
-  width: 30px;
-  height: 30px;
+  width: 23px;
+  height: 23px;
   border-radius: 50%;
   background: linear-gradient(135deg, #10b981, #047857);
   color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
   display: grid;
   place-items: center;
-  font-weight: 700;
-  font-size: 11px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
 }
 
@@ -358,7 +490,7 @@
   width: 100% !important;
   max-width: 100% !important;
   margin: 0 !important;
-  padding: 14px 24px !important;
+  padding: 0 !important;
   height: 100% !important;
   display: flex !important;
   flex-direction: column !important;
@@ -659,6 +791,15 @@
     height: 42px;
   }
 
+  .nav-item.active::before {
+    left: 0;
+    height: 20px;
+  }
+
+  .sidebar-floating-tooltip {
+    display: none !important;
+  }
+
   .nav-label {
     display: inline;
     position: static;
@@ -738,18 +879,37 @@ html.dark .sidebar {
 }
 
 html.dark .nav-item {
-  color: #94a3b8;
+  color: rgba(255, 255, 255, 0.7);
 }
 
 html.dark .nav-item:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.1);
   color: #ffffff;
 }
 
 html.dark .nav-item.active {
-  background: #08381e;
-  color: #4ade80;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+  background: #10b981;
+  color: #022c15;
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.35);
+}
+
+html.dark .nav-item.active::before {
+  background: #34d399;
+  box-shadow: 0 0 10px rgba(52, 211, 153, 0.6);
+}
+
+html.dark .sidebar-util-btn.active {
+  background: #10b981;
+  color: #022c15;
+}
+
+html.dark .sidebar-floating-tooltip {
+  background: #1e293b;
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+html.dark .sidebar-floating-tooltip::before {
+  border-color: transparent #1e293b transparent transparent;
 }
 
 html.dark .shell {
@@ -839,3 +999,6 @@ html.dark .content {
   background: #020617;
 }
 
+
+.content-scroll.workstation-no-scroll { min-height: 0; scrollbar-gutter: auto; }
+.content.workstation-content { min-height: 0; }

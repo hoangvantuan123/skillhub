@@ -9,15 +9,39 @@ export const NetworkContext = createContext({ isOnline: true });
 export function Providers({ children }) {
   // --- AUTH STATE ---
   const [currentUser, setCurrentUser] = useState(() => {
+    const isAuth = storage.get('is_authenticated', true);
+    if (!isAuth) return null;
     const savedId = storage.get('current_user_id', 'u-1');
     return mockUsers.find((u) => u.id === savedId) || mockUsers[0];
   });
+
+  const login = (userIdOrEmail) => {
+    const target = mockUsers.find(
+      (u) =>
+        u.id === userIdOrEmail ||
+        u.email?.toLowerCase() === String(userIdOrEmail).toLowerCase()
+    ) || mockUsers[0];
+
+    setCurrentUser(target);
+    storage.set('current_user_id', target.id);
+    storage.set('is_authenticated', true);
+    addToast(`Đăng nhập thành công! Chào mừng ${target.name}`, 'success');
+    return target;
+  };
+
+  const logout = () => {
+    setCurrentUser(null);
+    storage.remove('current_user_id');
+    storage.set('is_authenticated', false);
+    addToast('Đã đăng xuất khỏi hệ thống', 'info');
+  };
 
   const switchRole = (userId) => {
     const target = mockUsers.find((u) => u.id === userId);
     if (target) {
       setCurrentUser(target);
       storage.set('current_user_id', target.id);
+      storage.set('is_authenticated', true);
       addToast(`Đã chuyển vai trò sang: ${target.roleName}`, 'info');
     }
   };
@@ -66,7 +90,7 @@ export function Providers({ children }) {
 
   return (
     <NetworkContext.Provider value={{ isOnline }}>
-      <AuthContext.Provider value={{ currentUser, switchRole, hasPermission }}>
+      <AuthContext.Provider value={{ currentUser, login, logout, switchRole, hasPermission }}>
         <ToastContext.Provider value={{ addToast }}>
           {children}
 

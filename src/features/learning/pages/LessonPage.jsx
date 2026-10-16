@@ -1,12 +1,12 @@
+import ManagementFrame from '../../../shared/ui/ManagementFrame';
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import PageHeader from '../../../shared/components/PageHeader';
 import Card from '../../../shared/ui/Card';
 import Button from '../../../shared/ui/Button';
 import Badge from '../../../shared/ui/Badge';
 import { mockApi } from '../../../mocks/mockService';
 import { useToast } from '../../../shared/hooks/useToast';
-import { ArrowLeft, CheckCircle2, BookOpen, Clock, FileText, ArrowRight } from 'lucide-react';
+import { ArrowLeft, CheckCircle2 } from 'lucide-react';
 
 export default function LessonPage() {
   const navigate = useNavigate();
@@ -39,18 +39,15 @@ export default function LessonPage() {
   if (!course || !currentLesson) return <div>Đang nạp bài học...</div>;
 
   return (
-    <div>
-      <PageHeader
-        title={course.title}
-        subtitle={`Bài học hiện tại: ${currentLesson.title}`}
-        backAction={
-          <Button variant="ghost" size="sm" icon={ArrowLeft} onClick={() => navigate('/app/learning')}>
+    <ManagementFrame className="management-screen"
+header={<><div className="management-tabs"><span className="management-tab-active">Chi tiết</span>{null}</div><div className="management-actions">{<Button variant="ghost" size="sm" icon={ArrowLeft} onClick={() => navigate('/app/learning')}>
             Quay lại danh sách khóa học
-          </Button>
-        }
-      />
+          </Button>}{null}</div></>}
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 320px', gap: '20px' }}>
+status={<><strong>{course.title}</strong></>}
+>
+<div className="management-body-scroll">
+<div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 320px', gap: '20px' }}>
         {/* Main Lesson Content */}
         <Card style={{ padding: '28px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', borderBottom: '1px solid var(--line-subtle)', paddingBottom: '12px' }}>
@@ -137,6 +134,8 @@ export default function LessonPage() {
           </Card>
         </div>
       </div>
-    </div>
+</div>
+
+</ManagementFrame>
   );
 }

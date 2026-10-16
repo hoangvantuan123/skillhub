@@ -1,14 +1,14 @@
+import ManagementFrame from '../../../shared/ui/ManagementFrame';
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import PageHeader from '../../../shared/components/PageHeader';
 import Card from '../../../shared/ui/Card';
 import Input from '../../../shared/ui/Input';
 import Button from '../../../shared/ui/Button';
 import Badge from '../../../shared/ui/Badge';
-import { mockSubjects, mockTopics, mockQuestions, mockGroups } from '../../../mocks/mockData';
+import { mockSubjects, mockQuestions, mockGroups } from '../../../mocks/mockData';
 import { mockApi } from '../../../mocks/mockService';
 import { useToast } from '../../../shared/hooks/useToast';
-import { ArrowLeft, CheckCircle2, Eye, ShieldCheck, AlertTriangle } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, Eye } from 'lucide-react';
 
 export default function AssessmentEditorPage() {
   const navigate = useNavigate();
@@ -96,28 +96,22 @@ export default function AssessmentEditorPage() {
   };
 
   return (
-    <div style={{ maxWidth: '1180px', margin: '0 auto' }}>
-      <PageHeader
-        title={id && id !== 'new' ? `Chi tiết bộ đề: ${code}` : 'Thiết lập & Xuất bản bộ đề thi (MES L0-L3)'}
-        subtitle="Cấu hình ma trận câu hỏi đa cấp độ ISA-95 (L0-L3), quy tắc Điểm liệt tuyệt đối và phân bổ theo nhóm cấp bậc."
-        backAction={
-          <Button variant="ghost" size="sm" icon={ArrowLeft} onClick={() => navigate('/manage/assessments')}>
+    <ManagementFrame className="management-screen"
+header={<><div className="management-tabs"><span className="management-tab-active">Thiết lập</span>{null}</div><div className="management-actions">{<Button variant="ghost" size="sm" icon={ArrowLeft} onClick={() => navigate('/manage/assessments')}>
             Quay lại danh sách
-          </Button>
-        }
-        actions={
-          <div style={{ display: 'flex', gap: '10px' }}>
+          </Button>}{<div style={{ display: 'flex', gap: '10px' }}>
             <Button variant="outline" icon={Eye} onClick={() => setPreviewMode(!previewMode)}>
               {previewMode ? 'Chỉnh sửa ma trận' : 'Xem trước đề thi'}
             </Button>
             <Button variant="primary" icon={CheckCircle2} onClick={handlePublish}>
               Xuất bản phiên bản đề
             </Button>
-          </div>
-        }
-      />
+          </div>}</div></>}
 
-      {previewMode ? (
+status={<><strong>{id && id !== 'new' ? `Chi tiết bộ đề: ${code}` : 'Thiết lập & Xuất bản bộ đề thi (MES L0-L3)'}</strong></>}
+>
+<div className="management-body-scroll">
+{previewMode ? (
         /* Preview Mode */
         <Card style={{ padding: '28px' }}>
           <div style={{ borderBottom: '1px solid var(--line)', paddingBottom: '16px', marginBottom: '20px' }}>
@@ -158,7 +152,7 @@ export default function AssessmentEditorPage() {
               Thông tin cấu hình đề
             </h3>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '14px', marginBottom: '16px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: '14px', marginBottom: '16px' }}>
               <Input label="Mã bộ đề" value={code} onChange={(e) => setCode(e.target.value)} />
               
               <div>
@@ -308,6 +302,8 @@ export default function AssessmentEditorPage() {
           </Card>
         </div>
       )}
-    </div>
+</div>
+
+</ManagementFrame>
   );
 }

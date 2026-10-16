@@ -1,24 +1,9 @@
+import ManagementFrame from '../../../shared/ui/ManagementFrame';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../../../shared/ui/Button';
 import Select from '../../../shared/ui/Select';
-import {
-  Sliders,
-  Clock,
-  Award,
-  Layers,
-  MapPin,
-  ShieldAlert,
-  CheckCircle2,
-  RefreshCw,
-  Save,
-  Plus,
-  ArrowLeft,
-  Sparkles,
-  Zap,
-  Lock,
-  Users,
-} from 'lucide-react';
+import { Award, MapPin, ShieldAlert, RefreshCw, Save, Plus, Zap, Lock, Users } from 'lucide-react';
 import { useToast } from '../../../shared/hooks/useToast';
 
 /**
@@ -129,36 +114,40 @@ export default function ExamBlueprintConfigPage() {
   };
 
   return (
-    <div className="flex flex-col h-full overflow-hidden bg-slate-50/50 dark:bg-slate-950">
-      {/* Top Bar Header */}
-      <div className="bg-white dark:bg-slate-900 border-b border-slate-200/80 dark:border-slate-800 px-4 py-3 shrink-0">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div className="flex items-center gap-2.5">
-            <button
-              type="button"
-              onClick={() => navigate('/manage/assessments')}
-              className="p-1.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition-colors"
-              title="Quay lại danh sách bộ đề"
-            >
-              <ArrowLeft size={16} />
-            </button>
-            <div>
-              <div className="flex items-center gap-2">
-                <Sliders size={18} className="text-emerald-600 dark:text-emerald-400" />
-                <h1 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white tracking-tight">
-                  Cấu hình Quy chuẩn Bộ đề thi & Đề luyện
-                </h1>
-                <span className="px-2 py-0.5 rounded-md text-[11px] font-bold bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-400 border border-blue-200 dark:border-blue-800">
-                  Ma trận ISA-95
-                </span>
-              </div>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                Thiết lập số lượng câu hỏi, điểm đạt, thời gian làm bài và vị trí/xưởng tổ chức thi chuẩn hóa.
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2">
+    <ManagementFrame className="management-screen" header={<><div className="management-tabs"><button
+            type="button"
+            onClick={() => {
+              setConfigMode('exam');
+              setDurationMinutes(45);
+              setMaxAttempts(1);
+              setTabSwitchLock(true);
+            }}
+            className={`px-3 py-1.5 rounded-none text-xs font-bold transition-all flex items-center gap-2 ${
+              configMode === 'exam'
+                ? 'border-b-2 border-emerald-600 text-emerald-700 dark:text-emerald-400'
+                : 'bg-transparent text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
+            }`}
+          >
+            <Award size={14} />
+            Đề thi Sát hạch Chính thức (Official Exam)
+          </button>
+<button
+            type="button"
+            onClick={() => {
+              setConfigMode('practice');
+              setDurationMinutes(30);
+              setMaxAttempts(0);
+              setTabSwitchLock(false);
+            }}
+            className={`px-3 py-1.5 rounded-none text-xs font-bold transition-all flex items-center gap-2 ${
+              configMode === 'practice'
+                ? 'border-b-2 border-emerald-600 text-emerald-700 dark:text-emerald-400'
+                : 'bg-transparent text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
+            }`}
+          >
+            <Zap size={14} />
+            Bộ đề Tự Luyện tập (Self-Practice Mode)
+          </button></div><div className="management-actions"><div className="flex items-center gap-2">
             <Button
               variant="secondary"
               size="sm"
@@ -177,49 +166,7 @@ export default function ExamBlueprintConfigPage() {
             >
               Lưu cấu hình này
             </Button>
-          </div>
-        </div>
-
-        {/* Tab Selection: Exam vs Practice Mode */}
-        <div className="flex items-center gap-2 mt-3 pt-3 border-t border-slate-100 dark:border-slate-800">
-          <button
-            type="button"
-            onClick={() => {
-              setConfigMode('exam');
-              setDurationMinutes(45);
-              setMaxAttempts(1);
-              setTabSwitchLock(true);
-            }}
-            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-2 ${
-              configMode === 'exam'
-                ? 'bg-emerald-600 text-white shadow-xs'
-                : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
-            }`}
-          >
-            <Award size={14} />
-            Đề thi Sát hạch Chính thức (Official Exam)
-          </button>
-
-          <button
-            type="button"
-            onClick={() => {
-              setConfigMode('practice');
-              setDurationMinutes(30);
-              setMaxAttempts(0);
-              setTabSwitchLock(false);
-            }}
-            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-2 ${
-              configMode === 'practice'
-                ? 'bg-emerald-600 text-white shadow-xs'
-                : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
-            }`}
-          >
-            <Zap size={14} />
-            Bộ đề Tự Luyện tập (Self-Practice Mode)
-          </button>
-
-          {/* Preset Buttons */}
-          <div className="hidden lg:flex items-center gap-1.5 ml-auto text-xs text-slate-500">
+          </div></div></>} filters={<div className="hidden lg:flex items-center gap-1.5 ml-auto text-xs text-slate-500">
             <span className="text-[11px] font-semibold">Mẫu nhanh:</span>
             <button
               type="button"
@@ -242,17 +189,12 @@ export default function ExamBlueprintConfigPage() {
             >
               60 câu (Chuyên sâu)
             </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Configuration Content Grid */}
-      <div className="flex-1 overflow-y-auto p-4 sm:p-5">
+          </div>} status={<strong>Cấu hình bộ đề & Ma trận</strong>}><div className="management-body-scroll">
         <form onSubmit={handleSaveConfig} className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-5">
           {/* Column 1 & 2: Detailed Parameters */}
           <div className="lg:col-span-2 flex flex-col gap-5">
             {/* 1. Số lượng câu hỏi & Cơ cấu phân bổ Level */}
-            <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/90 dark:border-slate-800 p-4 sm:p-5 shadow-xs">
+            <div className="bg-white dark:bg-slate-900 rounded-md border border-slate-200/90 dark:border-slate-800 p-4 sm:p-5 shadow-none">
               <div className="flex items-center justify-between pb-3 mb-3 border-b border-slate-100 dark:border-slate-800">
                 <div className="flex items-center gap-2">
                   <div className="w-7 h-7 rounded-lg bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold text-xs">
@@ -321,7 +263,7 @@ export default function ExamBlueprintConfigPage() {
               {/* Level Breakdown Inputs */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
                 {/* Level 0 */}
-                <div className="p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/40">
+                <div className="p-3 rounded-md border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/40">
                   <div className="flex justify-between items-center mb-1.5">
                     <span className="text-xs font-bold text-blue-600 dark:text-blue-400">
                       Level 0 — Thiết bị trường & Cảm biến
@@ -340,7 +282,7 @@ export default function ExamBlueprintConfigPage() {
                 </div>
 
                 {/* Level 1 */}
-                <div className="p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/40">
+                <div className="p-3 rounded-md border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/40">
                   <div className="flex justify-between items-center mb-1.5">
                     <span className="text-xs font-bold text-sky-600 dark:text-sky-400">
                       Level 1 — PLC & Điều khiển máy
@@ -359,7 +301,7 @@ export default function ExamBlueprintConfigPage() {
                 </div>
 
                 {/* Level 2 */}
-                <div className="p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/40">
+                <div className="p-3 rounded-md border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/40">
                   <div className="flex justify-between items-center mb-1.5">
                     <span className="text-xs font-bold text-amber-600 dark:text-amber-400">
                       Level 2 — SCADA & Giao diện HMI
@@ -378,7 +320,7 @@ export default function ExamBlueprintConfigPage() {
                 </div>
 
                 {/* Level 3 */}
-                <div className="p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/40">
+                <div className="p-3 rounded-md border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/40">
                   <div className="flex justify-between items-center mb-1.5">
                     <span className="text-xs font-bold text-purple-600 dark:text-purple-400">
                       Level 3 — MES / MOM & ERP Liên vận
@@ -438,7 +380,7 @@ export default function ExamBlueprintConfigPage() {
             </div>
 
             {/* 2. Tiêu chuẩn Điểm đạt & Xếp loại */}
-            <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/90 dark:border-slate-800 p-4 sm:p-5 shadow-xs">
+            <div className="bg-white dark:bg-slate-900 rounded-md border border-slate-200/90 dark:border-slate-800 p-4 sm:p-5 shadow-none">
               <div className="flex items-center gap-2 pb-3 mb-3 border-b border-slate-100 dark:border-slate-800">
                 <div className="w-7 h-7 rounded-lg bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold text-xs">
                   2
@@ -492,7 +434,7 @@ export default function ExamBlueprintConfigPage() {
               </div>
 
               {/* Strict Critical Check */}
-              <div className="mt-3.5 p-3 rounded-xl bg-rose-50/60 dark:bg-rose-950/30 border border-rose-200/80 dark:border-rose-900/60 text-xs">
+              <div className="mt-3.5 p-3 rounded-md bg-rose-50/60 dark:bg-rose-950/30 border border-rose-200/80 dark:border-rose-900/60 text-xs">
                 <label className="flex items-start gap-2.5 cursor-pointer">
                   <input
                     type="checkbox"
@@ -513,7 +455,7 @@ export default function ExamBlueprintConfigPage() {
             </div>
 
             {/* 3. Thời gian làm bài & Quản lý thi */}
-            <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/90 dark:border-slate-800 p-4 sm:p-5 shadow-xs">
+            <div className="bg-white dark:bg-slate-900 rounded-md border border-slate-200/90 dark:border-slate-800 p-4 sm:p-5 shadow-none">
               <div className="flex items-center gap-2 pb-3 mb-3 border-b border-slate-100 dark:border-slate-800">
                 <div className="w-7 h-7 rounded-lg bg-purple-50 dark:bg-purple-950/60 text-purple-600 dark:text-purple-400 flex items-center justify-center font-bold text-xs">
                   3
@@ -606,7 +548,7 @@ export default function ExamBlueprintConfigPage() {
             </div>
 
             {/* 4. Vị trí / Địa điểm tổ chức & Trạm thi */}
-            <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/90 dark:border-slate-800 p-4 sm:p-5 shadow-xs">
+            <div className="bg-white dark:bg-slate-900 rounded-md border border-slate-200/90 dark:border-slate-800 p-4 sm:p-5 shadow-none">
               <div className="flex items-center gap-2 pb-3 mb-3 border-b border-slate-100 dark:border-slate-800">
                 <div className="w-7 h-7 rounded-lg bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold text-xs">
                   4
@@ -691,7 +633,7 @@ export default function ExamBlueprintConfigPage() {
 
           {/* Column 3: Live Blueprint Preview Summary */}
           <div className="lg:col-span-1">
-            <div className="sticky top-4 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/90 dark:border-slate-800 p-4 sm:p-5 shadow-sm flex flex-col gap-4">
+            <div className="sticky top-4 bg-white dark:bg-slate-900 rounded-md border border-slate-200/90 dark:border-slate-800 p-4 sm:p-5 shadow-sm flex flex-col gap-4">
               <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
                 <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
                   TỔNG QUAN MA TRẬN ĐỀ THI
@@ -703,28 +645,28 @@ export default function ExamBlueprintConfigPage() {
 
               {/* Stat Highlights */}
               <div className="grid grid-cols-2 gap-2 text-center">
-                <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950/60 border border-slate-100 dark:border-slate-800">
+                <div className="p-2.5 rounded-md bg-slate-50 dark:bg-slate-950/60 border border-slate-100 dark:border-slate-800">
                   <div className="text-[11px] text-slate-400 font-medium">Tổng số câu</div>
                   <div className="text-xl font-black text-slate-900 dark:text-white mt-0.5">
                     {totalQuestions}
                   </div>
                 </div>
 
-                <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950/60 border border-slate-100 dark:border-slate-800">
+                <div className="p-2.5 rounded-md bg-slate-50 dark:bg-slate-950/60 border border-slate-100 dark:border-slate-800">
                   <div className="text-[11px] text-slate-400 font-medium">Thời lượng</div>
                   <div className="text-xl font-black text-blue-600 dark:text-blue-400 mt-0.5">
                     {durationMinutes}'
                   </div>
                 </div>
 
-                <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950/60 border border-slate-100 dark:border-slate-800">
+                <div className="p-2.5 rounded-md bg-slate-50 dark:bg-slate-950/60 border border-slate-100 dark:border-slate-800">
                   <div className="text-[11px] text-slate-400 font-medium">Điểm đạt</div>
                   <div className="text-xl font-black text-emerald-600 dark:text-emerald-400 mt-0.5">
                     {passingPercentage}%
                   </div>
                 </div>
 
-                <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950/60 border border-slate-100 dark:border-slate-800">
+                <div className="p-2.5 rounded-md bg-slate-50 dark:bg-slate-950/60 border border-slate-100 dark:border-slate-800">
                   <div className="text-[11px] text-slate-400 font-medium">Câu điểm liệt</div>
                   <div className="text-xl font-black text-rose-600 dark:text-rose-400 mt-0.5">
                     {criticalCount} câu
@@ -761,7 +703,7 @@ export default function ExamBlueprintConfigPage() {
               </div>
 
               {/* Location & Restrictions Details */}
-              <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-950/60 border border-slate-100 dark:border-slate-800 text-xs flex flex-col gap-1.5">
+              <div className="p-3 rounded-md bg-slate-50 dark:bg-slate-950/60 border border-slate-100 dark:border-slate-800 text-xs flex flex-col gap-1.5">
                 <div className="flex items-center gap-1.5 text-slate-700 dark:text-slate-300">
                   <MapPin size={13} className="text-amber-500 shrink-0" />
                   <span className="truncate">
@@ -807,7 +749,6 @@ export default function ExamBlueprintConfigPage() {
             </div>
           </div>
         </form>
-      </div>
-    </div>
+      </div></ManagementFrame>
   );
 }

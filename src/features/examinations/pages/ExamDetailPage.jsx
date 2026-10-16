@@ -1,12 +1,12 @@
+import ManagementFrame from '../../../shared/ui/ManagementFrame';
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import PageHeader from '../../../shared/components/PageHeader';
 import Card from '../../../shared/ui/Card';
-import Badge from '../../../shared/ui/Badge';
+
 import Button from '../../../shared/ui/Button';
 import { mockApi } from '../../../mocks/mockService';
 import { formatDate } from '../../../shared/lib/formatters';
-import { ArrowLeft, Clock, ShieldCheck, AlertCircle, FileCheck2, UserCheck, Play } from 'lucide-react';
+import { ArrowLeft, ShieldCheck, Play } from 'lucide-react';
 
 export default function ExamDetailPage() {
   const navigate = useNavigate();
@@ -20,18 +20,15 @@ export default function ExamDetailPage() {
   if (!exam) return <div>Đang tải thông tin kỳ thi...</div>;
 
   return (
-    <div style={{ maxWidth: '820px', margin: '0 auto' }}>
-      <PageHeader
-        title={exam.title}
-        subtitle={`Mã ca thi: ${exam.code} · Thuộc bộ đề: ${exam.assessmentTitle}`}
-        backAction={
-          <Button variant="ghost" size="sm" icon={ArrowLeft} onClick={() => navigate('/app/exams')}>
+    <ManagementFrame className="management-screen"
+header={<><div className="management-tabs"><span className="management-tab-active">Chi tiết</span>{null}</div><div className="management-actions">{<Button variant="ghost" size="sm" icon={ArrowLeft} onClick={() => navigate('/app/exams')}>
             Quay lại danh sách kỳ thi
-          </Button>
-        }
-      />
+          </Button>}{null}</div></>}
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+status={<><strong>{exam.title}</strong></>}
+>
+<div className="management-body-scroll">
+<div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
         {/* Conditions card */}
         <Card style={{ padding: '24px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
@@ -95,6 +92,8 @@ export default function ExamDetailPage() {
           </div>
         </Card>
       </div>
-    </div>
+</div>
+
+</ManagementFrame>
   );
 }

@@ -1,11 +1,11 @@
+import ManagementFrame from '../../../shared/ui/ManagementFrame';
 import React, { useState } from 'react';
-import PageHeader from '../../../shared/components/PageHeader';
 import Card from '../../../shared/ui/Card';
 import Badge from '../../../shared/ui/Badge';
 import Button from '../../../shared/ui/Button';
 import Tabs from '../../../shared/ui/Tabs';
 import { mockSubjects, mockTopics } from '../../../mocks/mockData';
-import { Boxes, Plus, FolderTree, Layers } from 'lucide-react';
+import { Plus, FolderTree } from 'lucide-react';
 
 export default function CatalogPage() {
   const [activeTab, setActiveTab] = useState('subjects');
@@ -19,21 +19,16 @@ export default function CatalogPage() {
   ];
 
   return (
-    <div>
-      <PageHeader
-        title="Danh mục chuyên môn & Khung năng lực"
-        subtitle="Quản lý cây chuyên môn, chủ đề chuẩn hóa để liên kết bài học, ngân hàng câu hỏi và ma trận đề thi."
-        actions={
-          <Button variant="primary" icon={Plus} onClick={() => alert('Thêm danh mục mới')}>
+    <ManagementFrame className="management-screen"
+header={<><div className="management-tabs"><Tabs tabs={tabs} activeTab={activeTab} onChange={setActiveTab} />{null}</div><div className="management-actions">{null}{<Button variant="primary" icon={Plus} onClick={() => alert('Thêm danh mục mới')}>
             Thêm danh mục
-          </Button>
-        }
-      />
+          </Button>}</div></>}
 
-      <Tabs tabs={tabs} activeTab={activeTab} onChange={setActiveTab} />
-
-      {activeTab === 'subjects' && (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px' }}>
+status={<><strong>{"Danh mục chuyên môn & Khung năng lực"}</strong></>}
+>
+<div className="management-body-scroll">
+{activeTab === 'subjects' && (
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '16px' }}>
           {subjects.map((s) => (
             <Card key={s.id} hoverable style={{ padding: '20px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
@@ -52,8 +47,7 @@ export default function CatalogPage() {
           ))}
         </div>
       )}
-
-      {activeTab === 'topics' && (
+{activeTab === 'topics' && (
         <Card style={{ padding: '20px' }}>
           <h3 style={{ fontSize: '15px', fontWeight: '700', marginBottom: '16px', color: 'var(--navy)' }}>
             Danh sách chủ đề liên kết ID
@@ -88,13 +82,12 @@ export default function CatalogPage() {
           </div>
         </Card>
       )}
-
-      {activeTab === 'levels' && (
+{activeTab === 'levels' && (
         <Card style={{ padding: '20px' }}>
           <h3 style={{ fontSize: '15px', fontWeight: '700', marginBottom: '16px', color: 'var(--navy)' }}>
             Phân định 4 mức độ nhận thức (Bloom Taxonomy)
           </h3>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '14px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: '14px' }}>
             <div style={{ padding: '16px', borderRadius: '10px', background: 'var(--surface-canvas)', border: '1px solid var(--line)' }}>
               <Badge variant="default">Cấp độ 1</Badge>
               <h4 style={{ margin: '8px 0 4px', fontSize: '14px' }}>Nhận biết (Knowledge)</h4>
@@ -118,6 +111,8 @@ export default function CatalogPage() {
           </div>
         </Card>
       )}
-    </div>
+</div>
+
+</ManagementFrame>
   );
 }

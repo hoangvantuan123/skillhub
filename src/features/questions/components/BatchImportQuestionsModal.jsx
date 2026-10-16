@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import useAttributeCatalog from '../../../shared/hooks/useAttributeCatalog';
 import Modal from '../../../shared/ui/Modal';
 import Button from '../../../shared/ui/Button';
 import Badge from '../../../shared/ui/Badge';
@@ -7,6 +8,7 @@ import { mockSubjects, mockGroups } from '../../../mocks/mockData';
 import { Upload, FileText, CheckCircle2, AlertTriangle, Sparkles, Database } from 'lucide-react';
 
 export default function BatchImportQuestionsModal({ open, onClose, onImportSuccess }) {
+  const levelCatalog = useAttributeCatalog('level');
   const [selectedSubject, setSelectedSubject] = useState('sub-mes');
   const [selectedGroup, setSelectedGroup] = useState('grp-mes');
   const [defaultLevel, setDefaultLevel] = useState('L2');
@@ -136,6 +138,10 @@ Giải thích: Điểm liệt chất lượng tuyệt đối trong MES/GMP: Ph�
       return;
     }
 
+    if (levelCatalog.loading || levelCatalog.error || previewList.some(row => !levelCatalog.options.some(option => option.value === row.level && option.active && option.value !== 'All'))) {
+      alert('Có câu hỏi sử dụng cấp độ không có trong danh mục hoặc đã ngừng sử dụng. Vui lòng kiểm tra mã Level.');
+      return;
+    }
     setImporting(true);
     try {
       if (onImportSuccess) {
@@ -157,10 +163,11 @@ Giải thích: Điểm liệt chất lượng tuyệt đối trong MES/GMP: Ph�
       width="900px"
       footer={
         <>
-          <Button variant="outline" onClick={onClose}>
+          <Button size="sm" variant="outline" onClick={onClose}>
             Hủy
           </Button>
           <Button
+            size="sm"
             variant="primary"
             icon={Database}
             loading={importing}
@@ -174,9 +181,9 @@ Giải thích: Điểm liệt chất lượng tuyệt đối trong MES/GMP: Ph�
     >
       <div className="flex flex-col gap-4 text-xs text-slate-800 dark:text-slate-200">
         {/* Settings Bar */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 p-3.5 rounded-xl bg-slate-50/50 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 p-3.5 rounded-md bg-slate-50/50 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800">
           <div>
-            <label className="text-[11px] font-bold text-slate-700 dark:text-slate-300 block mb-1">
+            <label className="text-[11px] font-semibold text-slate-700 dark:text-slate-300 block mb-1">
               Chuyên môn áp dụng:
             </label>
             <Select
@@ -188,7 +195,7 @@ Giải thích: Điểm liệt chất lượng tuyệt đối trong MES/GMP: Ph�
           </div>
 
           <div>
-            <label className="text-[11px] font-bold text-slate-700 dark:text-slate-300 block mb-1">
+            <label className="text-[11px] font-semibold text-slate-700 dark:text-slate-300 block mb-1">
               Nhóm đối tượng áp dụng:
             </label>
             <Select
@@ -200,26 +207,22 @@ Giải thích: Điểm liệt chất lượng tuyệt đối trong MES/GMP: Ph�
           </div>
 
           <div>
-            <label className="text-[11px] font-bold text-slate-700 dark:text-slate-300 block mb-1">
-              Cấp độ ISA-95 mặc định:
+            <label className="text-[11px] font-semibold text-slate-700 dark:text-slate-300 block mb-1">
+              {levelCatalog.label || 'Cấp độ'} mặc định:
             </label>
             <Select
               size="sm"
               value={defaultLevel}
               onChange={(e) => setDefaultLevel(e.target.value)}
-              options={[
-                { value: 'L0', label: 'Level 0 — Quá trình vật lý & Cảm biến' },
-                { value: 'L1', label: 'Level 1 — Điều khiển chấp hành & PLC' },
-                { value: 'L2', label: 'Level 2 — Giám sát SCADA & Màn hình HMI' },
-                { value: 'L3', label: 'Level 3 — Điều hành sản xuất MES & MOM' },
-              ]}
+              disabled={levelCatalog.loading || !!levelCatalog.error}
+              options={levelCatalog.optionsFor(defaultLevel, { includeAll: false })}
             />
           </div>
         </div>
 
         {/* Action Header for Raw Input */}
-        <div className="flex justify-between items-center gap-2">
-          <span className="text-xs font-bold text-slate-800 dark:text-slate-200">
+        <div className="flex flex-wrap justify-between items-center gap-2">
+          <span className="text-xs font-semibold text-slate-800 dark:text-slate-200">
             Dán nội dung cấu trúc (Hỗ trợ Level, Format, Điểm liệt & Đáp án A-D):
           </span>
           <Button size="sm" variant="secondary" icon={Sparkles} onClick={handleLoadSample}>
@@ -236,29 +239,29 @@ Giải thích: Điểm liệt chất lượng tuyệt đối trong MES/GMP: Ph�
             parseRawText(e.target.value);
           }}
           placeholder="Dán nội dung các câu hỏi tại đây theo mẫu [CÂU HỎI 1], Level: L0, Format: theory, Điểm liệt: Có..."
-          className="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 text-xs font-mono leading-relaxed text-slate-900 dark:text-slate-100 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20"
+          className="w-full p-3 rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 text-xs font-mono leading-relaxed text-slate-900 dark:text-slate-100 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20"
         />
 
         {/* Live Preview Section */}
         {previewList.length > 0 && (
           <div>
-            <div className="flex justify-between items-center mb-2">
-              <strong className="text-xs font-bold text-slate-900 dark:text-white">
+            <div className="flex flex-wrap gap-2 justify-between items-center mb-2">
+              <strong className="text-xs font-semibold text-slate-900 dark:text-white">
                 Xem trước dữ liệu phân tích ({previewList.length} câu hỏi):
               </strong>
               <div className="flex gap-2">
-                <span className="text-[11px] text-rose-600 dark:text-rose-400 font-bold">
+                <span className="text-[11px] text-rose-600 dark:text-rose-400 font-semibold">
                   ⚡ {previewList.filter((p) => p.isCritical).length} câu Điểm liệt
                 </span>
-                <span className="text-[11px] text-blue-600 dark:text-blue-400 font-bold">
+                <span className="text-[11px] text-blue-600 dark:text-blue-400 font-semibold">
                   🎮 {previewList.filter((p) => p.format === 'simulation_hmi').length} câu Mô phỏng HMI
                 </span>
               </div>
             </div>
 
-            <div className="max-h-52 overflow-y-auto border border-slate-200 dark:border-slate-800 rounded-xl bg-white dark:bg-slate-900">
+            <div className="max-h-64 overflow-auto border border-slate-200 dark:border-slate-800 rounded-md bg-white dark:bg-slate-900">
               <table className="w-full border-collapse text-xs">
-                <thead>
+                <thead className="sticky top-0 z-10">
                   <tr className="bg-slate-50/80 dark:bg-slate-950 text-left border-b border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300">
                     <th className="p-2.5">STT</th>
                     <th className="p-2.5">Cấp Level</th>
@@ -271,10 +274,10 @@ Giải thích: Điểm liệt chất lượng tuyệt đối trong MES/GMP: Ph�
                 <tbody>
                   {previewList.map((item, idx) => (
                     <tr key={idx} className="border-b border-slate-100 dark:border-slate-800/60 hover:bg-slate-50/50 dark:hover:bg-slate-800/40">
-                      <td className="p-2.5 font-bold">#{idx + 1}</td>
+                      <td className="p-2.5 font-semibold">#{idx + 1}</td>
                       <td className="p-2.5">
                         <span className={`badge-level badge-level-${item.level?.toLowerCase()}`}>
-                          {item.level}
+                          {levelCatalog.labelFor(item.level)}
                         </span>
                       </td>
                       <td className="p-2.5">
@@ -287,10 +290,10 @@ Giải thích: Điểm liệt chất lượng tuyệt đối trong MES/GMP: Ph�
                       <td className="p-2.5 text-slate-600 dark:text-slate-300 font-medium">
                         {item.format === 'simulation_hmi' ? '🎮 Mô phỏng HMI' : item.format === 'case_study' ? '💼 Case tình huống' : '📚 Lý thuyết'}
                       </td>
-                      <td className="p-2.5 max-w-[320px] truncate">
+                      <td className="p-2.5 min-w-64 max-w-[400px] whitespace-pre-wrap break-words">
                         {item.content}
                       </td>
-                      <td className="p-2.5 text-blue-600 dark:text-blue-400 font-bold">
+                      <td className="p-2.5 text-blue-600 dark:text-blue-400 font-semibold">
                         {item.options.length} phương án
                       </td>
                     </tr>

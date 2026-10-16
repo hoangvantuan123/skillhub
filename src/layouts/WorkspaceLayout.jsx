@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet, Navigate } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import HelpDialog from '../shared/components/HelpDialog';
-import { Menu, CircleHelp, Info } from 'lucide-react';
+import { Menu, CircleHelp } from 'lucide-react';
+import { useAuth } from '../shared/hooks/useAuth';
 
 export default function WorkspaceLayout() {
+  const { currentUser } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [helpOpen, setHelpOpen] = useState(false);
-  const location = useLocation();
 
-  const isFullWorkstation = location.pathname === '/manage/questions';
+  if (!currentUser) {
+    return <Navigate to="/login" replace />;
+  }
 
   return (
     <div className="app-layout">
@@ -24,7 +27,7 @@ export default function WorkspaceLayout() {
       <div className="shell">
         {/* Mobile Header only (< 768px) */}
         <div className="md:hidden flex items-center justify-between px-4 h-12 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex-shrink-0">
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2">
             <button
               onClick={() => setMobileMenuOpen(true)}
               className="p-1.5 rounded-lg text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800"
@@ -32,7 +35,8 @@ export default function WorkspaceLayout() {
             >
               <Menu size={20} />
             </button>
-            <span className="font-bold text-emerald-800 dark:text-emerald-400 text-sm tracking-wide">SkillHub</span>
+            <img src="/assets/goldsun/goldsun-icon.png" alt="Goldsun" className="w-5 h-5 object-contain" />
+            <span className="font-bold text-emerald-800 dark:text-emerald-400 text-sm tracking-wide">Đánh giá năng lực MES</span>
           </div>
           <button
             onClick={() => setHelpOpen(true)}
@@ -43,27 +47,12 @@ export default function WorkspaceLayout() {
           </button>
         </div>
 
-        <div className={`content-scroll ${isFullWorkstation ? 'workstation-no-scroll' : ''}`}>
-          <main id="main" className={`content animate-fade-in ${isFullWorkstation ? 'workstation-content' : ''}`}>
+        <div className="content-scroll workstation-no-scroll">
+          <main id="main" className="content workstation-content">
             <Outlet />
           </main>
 
-          {!isFullWorkstation && (
-            <footer className="app-footer">
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <button
-                  className="icon-button"
-                  style={{ width: '30px', height: '30px' }}
-                  aria-label="Thông tin hệ thống SkillHub"
-                  onClick={() => setHelpOpen(true)}
-                >
-                  <Info size={17} />
-                </button>
-                <span>SkillHub © 2026 — Nền tảng Đánh giá & Học tập Năng lực</span>
-              </div>
-              <div>Múi giờ: Asia/Ho_Chi_Minh (UTC+7)</div>
-            </footer>
-          )}
+
         </div>
       </div>
 

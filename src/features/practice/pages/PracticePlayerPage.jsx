@@ -1,6 +1,6 @@
+import ManagementFrame from '../../../shared/ui/ManagementFrame';
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import PageHeader from '../../../shared/components/PageHeader';
 import Card from '../../../shared/ui/Card';
 import Button from '../../../shared/ui/Button';
 import Badge from '../../../shared/ui/Badge';
@@ -82,18 +82,15 @@ export default function PracticePlayerPage() {
   }
 
   return (
-    <div style={{ maxWidth: '1060px', margin: '0 auto' }}>
-      <PageHeader
-        title={`Luyện tập: Câu ${currentIdx + 1} / ${questions.length}`}
-        subtitle={`Chủ đề: ${currentQ.topicName || 'Chung'} · Cấp độ: ${currentQ.level || 'L3'} · Mức độ: ${currentQ.difficultyLabel || 'Thông hiểu'}`}
-        backAction={
-          <Button variant="ghost" size="sm" icon={ArrowLeft} onClick={() => navigate('/app/practice')}>
+    <ManagementFrame className="management-screen"
+header={<><div className="management-tabs"><span className="management-tab-active">Chi tiết</span>{null}</div><div className="management-actions">{<Button variant="ghost" size="sm" icon={ArrowLeft} onClick={() => navigate('/app/practice')}>
             Thoát luyện tập
-          </Button>
-        }
-      />
+          </Button>}{null}</div></>}
 
-      <Card style={{ padding: '28px' }}>
+status={<><strong>{`Luyện tập: Câu ${currentIdx + 1} / ${questions.length}`}</strong></>}
+>
+<div className="management-body-scroll">
+<Card style={{ padding: '28px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '14px', flexWrap: 'wrap' }}>
           {currentQ.level && (
             <span className={`badge-level badge-level-${currentQ.level.toLowerCase()}`}>
@@ -199,6 +196,8 @@ export default function PracticePlayerPage() {
           )}
         </div>
       </Card>
-    </div>
+</div>
+
+</ManagementFrame>
   );
 }

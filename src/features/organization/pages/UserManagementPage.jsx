@@ -1,15 +1,13 @@
+import ManagementList from '../../../shared/ui/ManagementList';
 import React, { useState, useEffect } from 'react';
-import PageHeader from '../../../shared/components/PageHeader';
-import SearchFilter from '../../../shared/components/SearchFilter';
-import Card from '../../../shared/ui/Card';
+
 import Badge from '../../../shared/ui/Badge';
 import Button from '../../../shared/ui/Button';
 import Input from '../../../shared/ui/Input';
 import Modal from '../../../shared/ui/Modal';
-import Table from '../../../shared/ui/Table';
 import { mockApi } from '../../../mocks/mockService';
 import { useToast } from '../../../shared/hooks/useToast';
-import { UserPlus, Shield, Users, Award, CheckCircle2, Star, KeyRound, Copy, ExternalLink, ClipboardCheck } from 'lucide-react';
+import { UserPlus, Award, CheckCircle2, Star, KeyRound, Copy, ExternalLink } from 'lucide-react';
 
 export default function UserManagementPage() {
   const { addToast } = useToast();
@@ -202,60 +200,21 @@ export default function UserManagementPage() {
   ];
 
   return (
-    <div>
-      <PageHeader
-        title="Quản lý Tài khoản & Phân quyền Người học"
-        subtitle="Đăng ký tài khoản người học, gán nhóm lớp, phân bổ nhiều vai trò và thiết lập cấp bậc thăng tiến chuyên môn."
-        actions={
-          <div style={{ display: 'flex', gap: '10px' }}>
+    <>
+<ManagementList title={"Quản lý Tài khoản & Phân quyền Người học"} actions={<div style={{ display: 'flex', gap: '10px' }}>
             <Button variant="secondary" icon={KeyRound} onClick={handleOpenCandidateModal}>
               ⚡ Cấp SBD & Passcode Thi
             </Button>
             <Button variant="primary" icon={UserPlus} onClick={() => setShowCreateModal(true)}>
               Đăng ký người học / Tạo tài khoản mới
             </Button>
-          </div>
-        }
-      />
-
-      <SearchFilter
-        searchValue={search}
-        onSearchChange={setSearch}
-        placeholder="Tìm kiếm theo tên tài khoản, email, đơn vị..."
-        filters={
-          <select
-            value={filterGroup}
-            onChange={(e) => setFilterGroup(e.target.value)}
-            style={{
-              padding: '8px 12px',
-              borderRadius: '8px',
-              border: '1px solid var(--line)',
-              fontSize: '13px',
-              background: '#ffffff',
-              color: 'var(--navy)',
-              outline: 'none',
-            }}
-          >
-            <option value="">Tất cả nhóm học viên</option>
-            {groups.map((g) => (
-              <option key={g.id} value={g.id}>
-                {g.name} ({g.code})
-              </option>
-            ))}
-          </select>
-        }
-      />
-
-      <Card style={{ padding: '0', overflow: 'hidden' }}>
-        <Table columns={columns} data={users} />
-      </Card>
-
-      {/* Modal Đăng ký tài khoản / Phân quyền */}
-      <Modal
+          </div>} columns={columns} data={users} searchPlaceholder={"Tìm kiếm theo tên tài khoản, email, đơn vị..."} />
+<Modal
         open={showCreateModal}
         onClose={() => setShowCreateModal(false)}
         title="Đăng ký tài khoản & Phân quyền người học"
-        maxWidth="620px"
+        size="xl"
+        density="comfortable"
         footer={
           <>
             <Button variant="outline" onClick={() => setShowCreateModal(false)}>
@@ -268,7 +227,7 @@ export default function UserManagementPage() {
         }
       >
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Input
               label="Họ và tên người học"
               placeholder="Ví dụ: Nguyễn Văn An"
@@ -284,15 +243,15 @@ export default function UserManagementPage() {
             />
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label style={{ fontSize: '13px', fontWeight: '600', color: 'var(--navy)', display: 'block', marginBottom: '6px' }}>
+              <label style={{ fontSize: '14px', fontWeight: '600', color: 'var(--navy)', display: 'block', marginBottom: '6px' }}>
                 Đơn vị / Phòng ban
               </label>
               <select
                 value={formDepartment}
                 onChange={(e) => setFormDepartment(e.target.value)}
-                style={{ width: '100%', padding: '9px 12px', borderRadius: '8px', border: '1px solid var(--line)', fontSize: '13px' }}
+                style={{ width: '100%', padding: '9px 12px', borderRadius: '8px', border: '1px solid var(--line)', fontSize: '14px' }}
               >
                 <option value="Khối MES & Nhà máy Thông minh">Khối MES & Nhà máy Thông minh</option>
                 <option value="Trung tâm Phát triển Phần mềm">Trung tâm Phát triển Phần mềm</option>
@@ -302,13 +261,13 @@ export default function UserManagementPage() {
             </div>
 
             <div>
-              <label style={{ fontSize: '13px', fontWeight: '600', color: 'var(--navy)', display: 'block', marginBottom: '6px' }}>
+              <label style={{ fontSize: '14px', fontWeight: '600', color: 'var(--navy)', display: 'block', marginBottom: '6px' }}>
                 Gán vào Nhóm / Lớp học viên
               </label>
               <select
                 value={formGroup}
                 onChange={(e) => setFormGroup(e.target.value)}
-                style={{ width: '100%', padding: '9px 12px', borderRadius: '8px', border: '1px solid var(--line)', fontSize: '13px' }}
+                style={{ width: '100%', padding: '9px 12px', borderRadius: '8px', border: '1px solid var(--line)', fontSize: '14px' }}
               >
                 <option value="">-- Chưa gán nhóm --</option>
                 {groups.map((g) => (
@@ -321,13 +280,13 @@ export default function UserManagementPage() {
           </div>
 
           <div>
-            <label style={{ fontSize: '13px', fontWeight: '600', color: 'var(--navy)', display: 'block', marginBottom: '6px' }}>
+            <label style={{ fontSize: '14px', fontWeight: '600', color: 'var(--navy)', display: 'block', marginBottom: '6px' }}>
               Cấp bậc thăng tiến năng lực (Competency Tier)
             </label>
             <select
               value={formRank}
               onChange={(e) => setFormRank(e.target.value)}
-              style={{ width: '100%', padding: '9px 12px', borderRadius: '8px', border: '1px solid var(--line)', fontSize: '13px' }}
+              style={{ width: '100%', padding: '9px 12px', borderRadius: '8px', border: '1px solid var(--line)', fontSize: '14px' }}
             >
               <option value="Sơ cấp / Fresher (Bậc 1)">Sơ cấp / Fresher (Bậc 1) - Tiếp cận kiến thức nền</option>
               <option value="Chuyên viên / Specialist (Bậc 2)">Chuyên viên / Specialist (Bậc 2) - Nắm vững quy trình</option>
@@ -339,17 +298,17 @@ export default function UserManagementPage() {
 
           {/* Multi-role selection */}
           <div style={{ background: 'var(--surface-canvas)', padding: '16px', borderRadius: '10px', border: '1px solid var(--line)' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px', marginBottom: '10px' }}>
               <div>
-                <strong style={{ fontSize: '13px', color: 'var(--navy)' }}>Phân quyền vai trò (1 người có nhiều vai trò)</strong>
-                <p style={{ fontSize: '11px', color: 'var(--navy-muted)', margin: '2px 0 0' }}>Tích chọn các vai trò mà tài khoản được phép thực hiện trên hệ thống.</p>
+                <strong style={{ fontSize: '14px', color: 'var(--navy)' }}>Phân quyền vai trò (1 người có nhiều vai trò)</strong>
+                <p style={{ fontSize: '13px', color: 'var(--navy-muted)', margin: '2px 0 0' }}>Tích chọn các vai trò mà tài khoản được phép thực hiện trên hệ thống.</p>
               </div>
               <Button size="sm" variant="secondary" icon={Star} onClick={handleSelectFullAdmin}>
                 Cấp Full Quyền
               </Button>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px' }}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {[
                 { id: 'learner', title: 'Người học', desc: 'Vào thi, luyện tập, học bài' },
                 { id: 'author', title: 'Người biên soạn', desc: 'Soạn học liệu, câu hỏi, bộ đề' },
@@ -382,8 +341,8 @@ export default function UserManagementPage() {
                       style={{ marginTop: '2px', cursor: 'pointer' }}
                     />
                     <div>
-                      <strong style={{ fontSize: '12px', color: 'var(--navy)', display: 'block' }}>{r.title}</strong>
-                      <span style={{ fontSize: '11px', color: 'var(--navy-muted)' }}>{r.desc}</span>
+                      <strong style={{ fontSize: '14px', color: 'var(--navy)', display: 'block' }}>{r.title}</strong>
+                      <span style={{ fontSize: '13px', color: 'var(--navy-muted)' }}>{r.desc}</span>
                     </div>
                   </label>
                 );
@@ -392,12 +351,11 @@ export default function UserManagementPage() {
           </div>
         </div>
       </Modal>
-
-      {/* Candidate Passcode & Exam Provisioning Modal */}
-      <Modal
+<Modal
         open={showCandidateModal}
         onClose={() => setShowCandidateModal(false)}
         title="⚡ Cấp Tài Khoản & Mã Dự Thi (SBD & Passcode)"
+        density="comfortable"
         width="880px"
         footer={
           <Button variant="outline" onClick={() => setShowCandidateModal(false)}>
@@ -411,7 +369,7 @@ export default function UserManagementPage() {
             <h4 style={{ fontSize: '13px', fontWeight: '700', color: 'var(--navy)', marginBottom: '12px' }}>
               Cấp Số Báo Danh (SBD) và Passcode vào thi cho thí sinh mới:
             </h4>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '12px', marginBottom: '12px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 180px), 1fr))', gap: '12px', marginBottom: '12px' }}>
               <Input label="Họ và tên thí sinh" value={candName} onChange={(e) => setCandName(e.target.value)} />
               <Input label="Email liên hệ" value={candEmail} onChange={(e) => setCandEmail(e.target.value)} />
               <div>
@@ -518,6 +476,6 @@ export default function UserManagementPage() {
           </div>
         </div>
       </Modal>
-    </div>
+</>
   );
 }

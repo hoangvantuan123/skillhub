@@ -40,6 +40,7 @@ a {
   text-decoration: none;
 }
 
+@layer base {
 button, input, select, textarea {
   font-family: inherit;
   font-size: inherit;
@@ -52,13 +53,19 @@ button {
   background: none;
 }
 
+button:focus:not(:focus-visible), a:focus:not(:focus-visible) {
+  outline: none;
+}
+
 button:focus-visible, a:focus-visible {
-  outline: 2px solid var(--color-primary-400);
+  outline: 2px solid #10b981;
   outline-offset: 2px;
 }
 
 input, select, textarea {
   outline: none !important;
+}
+
 }
 
 /* Scrollbar customization */
@@ -132,4 +139,42 @@ input, select, textarea {
 
 .text-muted {
   color: var(--navy-muted);
+}
+
+/* Shared compact dialog controls, aligned with management tables. */
+.ui-modal .ui-button { height: 32px !important; padding: 6px 12px !important; font-size: 12px !important; border-radius: 6px !important; box-shadow: none !important; }
+.ui-modal input:not([type="checkbox"]):not([type="radio"]), .ui-modal textarea { border-radius: 6px; }
+.ui-modal input[type="checkbox"] { accent-color: #059669; }
+.ui-modal :is(input, textarea, button):focus-visible { outline: 2px solid #10b981 !important; outline-offset: 2px; }
+
+/* Form dialogs retain the same flat shell with larger, readable controls. */
+.ui-modal-comfortable .ui-modal-body { padding: 24px; font-size: 14px; line-height: 1.6; }
+.ui-modal-comfortable h2 { font-size: 16px; }
+.ui-modal-comfortable .ui-modal-body label { font-size: 14px !important; }
+.ui-modal-comfortable .ui-modal-body :is(input:not([type="checkbox"]):not([type="radio"]), select, textarea) { font-size: 14px !important; }
+.ui-modal-comfortable .ui-modal-body select { min-height: 40px; }
+.ui-modal-comfortable .ui-modal-body button[aria-haspopup="listbox"] { min-height: 40px; font-size: 14px; }
+.ui-modal-comfortable .ui-modal-body :is(input:not([type="checkbox"]):not([type="radio"]), textarea) { padding-top: 10px; padding-bottom: 10px; }
+.ui-modal .ui-button svg { width: 14px; height: 14px; }
+@media (max-width: 640px) { .ui-modal-comfortable .ui-modal-body { padding: 16px; } }
+
+/* Management screens share the questions workspace layout. */
+.management-screen { min-height: 0; }
+.management-tabs { display: flex; align-items: center; gap: 16px; min-width: 0; overflow-x: auto; }
+.management-tab-active { display: inline-flex; align-items: center; min-height: 40px; padding: 8px 0; border-bottom: 2px solid #059669; color: #047857; font-size: 12px; font-weight: 600; white-space: nowrap; }
+.dark .management-tab-active { color: #34d399; }
+.management-actions { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 6px; padding: 6px 0; }
+.management-actions > div { flex-wrap: wrap; }
+.management-screen .ui-button { height: 32px; padding: 6px 12px; font-size: 12px; border-radius: 6px; box-shadow: none !important; }
+.management-screen .management-actions .ui-button { height: 32px !important; padding: 6px 12px !important; font-size: 12px !important; }
+.management-screen .ui-button svg { width: 14px; height: 14px; }
+.management-body-scroll { height: 100%; min-height: 0; overflow: auto; overscroll-behavior: contain; padding: 16px; display: flex; flex-direction: column; gap: 16px; }
+.management-body-scroll > * { flex-shrink: 0; min-width: 0; }
+.management-screen .ui-card { box-shadow: none !important; border-radius: 6px !important; }
+.management-screen .ui-card.hoverable:hover { transform: none !important; box-shadow: none !important; }
+@media (max-width: 640px) { .management-body-scroll { padding: 12px; } .management-actions { justify-content: flex-start; } }
+@media (max-width: 640px) {
+  .management-body-scroll [style*="grid-template-columns: 1fr 1fr"],
+  .management-body-scroll [style*="grid-template-columns: 2fr 1fr"],
+  .management-body-scroll [style*="grid-template-columns: 1fr 2fr"] { grid-template-columns: minmax(0, 1fr) !important; }
 }

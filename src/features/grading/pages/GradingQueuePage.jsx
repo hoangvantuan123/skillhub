@@ -1,14 +1,12 @@
+import ManagementList from '../../../shared/ui/ManagementList';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import PageHeader from '../../../shared/components/PageHeader';
-import SearchFilter from '../../../shared/components/SearchFilter';
-import Card from '../../../shared/ui/Card';
+
 import Badge from '../../../shared/ui/Badge';
 import Button from '../../../shared/ui/Button';
-import Table from '../../../shared/ui/Table';
 import { mockApi } from '../../../mocks/mockService';
 import { formatDate, formatScore } from '../../../shared/lib/formatters';
-import { ClipboardCheck, ArrowRight, User } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 export default function GradingQueuePage() {
   const navigate = useNavigate();
@@ -71,21 +69,9 @@ export default function GradingQueuePage() {
   ];
 
   return (
-    <div>
-      <PageHeader
-        title="Danh sách bài thi chờ chấm (Grading Queue)"
-        subtitle="Chấm các bài thi tự luận và tình huống theo tiêu chí rubric chuẩn hóa."
-      />
+    <>
+<ManagementList title={"Danh sách bài thi chờ chấm (Grading Queue)"} actions={null} columns={columns} data={submissions} searchPlaceholder={"Tìm kiếm theo tên thí sinh, mã bài nộp..."} />
 
-      <SearchFilter
-        searchValue={search}
-        onSearchChange={setSearch}
-        placeholder="Tìm kiếm theo tên thí sinh, mã bài nộp..."
-      />
-
-      <Card style={{ padding: '0', overflow: 'hidden' }}>
-        <Table columns={columns} data={submissions} />
-      </Card>
-    </div>
+</>
   );
 }

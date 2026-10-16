@@ -1,11 +1,11 @@
+import ManagementFrame from '../../../shared/ui/ManagementFrame';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import PageHeader from '../../../shared/components/PageHeader';
 import Card from '../../../shared/ui/Card';
 import Button from '../../../shared/ui/Button';
-import Badge from '../../../shared/ui/Badge';
-import { mockSubjects, mockTopics } from '../../../mocks/mockData';
-import { Dumbbell, Play, Sparkles, BookOpen } from 'lucide-react';
+
+import { mockSubjects } from '../../../mocks/mockData';
+import { Play } from 'lucide-react';
 
 export default function PracticeSetupPage() {
   const navigate = useNavigate();
@@ -18,18 +18,18 @@ export default function PracticeSetupPage() {
   };
 
   return (
-    <div style={{ maxWidth: '720px', margin: '0 auto' }}>
-      <PageHeader
-        title="Luyện tập & Củng cố kiến thức"
-        subtitle="Chọn chủ đề, độ khó để luyện tập tự do không áp lực thời gian. Kiểm tra đáp án và đọc giải thích chi tiết ngay lập tức."
-      />
+    <ManagementFrame className="management-screen"
+header={<><div className="management-tabs"><span className="management-tab-active">Thiết lập</span>{null}</div><div className="management-actions">{null}{null}</div></>}
 
-      <Card style={{ padding: '28px', display: 'flex', flexDirection: 'column', gap: '22px' }}>
+status={<><strong>{"Luyện tập & Củng cố kiến thức"}</strong></>}
+>
+<div className="management-body-scroll">
+<Card style={{ padding: '28px', display: 'flex', flexDirection: 'column', gap: '22px' }}>
         <div>
           <label style={{ fontSize: '13px', fontWeight: '700', color: 'var(--navy)', display: 'block', marginBottom: '8px' }}>
             1. Chọn chuyên môn luyện tập:
           </label>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '10px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: '10px' }}>
             {mockSubjects.map((s) => {
               const isSelected = selectedSubject === s.id;
               return (
@@ -119,6 +119,8 @@ export default function PracticeSetupPage() {
           </Button>
         </div>
       </Card>
-    </div>
+</div>
+
+</ManagementFrame>
   );
 }

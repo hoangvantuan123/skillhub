@@ -1,20 +1,8 @@
+import ManagementFrame from '../../../shared/ui/ManagementFrame';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../shared/hooks/useAuth';
-import {
-  FilePlus2,
-  Landmark,
-  CalendarDays,
-  BookOpen,
-  Lightbulb,
-  Clock,
-  ArrowRight,
-  CheckCircle2,
-  Award,
-  AlertCircle,
-  Dumbbell,
-  ClipboardCheck,
-} from 'lucide-react';
+import { FilePlus2, Landmark, CalendarDays, BookOpen, Clock, ArrowRight, CheckCircle2, Award, AlertCircle, Dumbbell, ClipboardCheck } from 'lucide-react';
 import Card from '../../../shared/ui/Card';
 import Badge from '../../../shared/ui/Badge';
 import Button from '../../../shared/ui/Button';
@@ -78,34 +66,9 @@ export default function DashboardPage() {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '26px' }}>
+    <ManagementFrame className="management-screen" header={<span className="management-tab-active">Tổng quan</span>} status={<strong>Tổng quan</strong>}><div className="management-body-scroll">
       {/* Welcome Banner */}
-      <section
-        style={{
-          background: 'linear-gradient(108deg, #0d1b2e 0%, #183760 55%, #2548b7 100%)',
-          borderRadius: '16px',
-          padding: '24px 28px',
-          color: '#ffffff',
-          position: 'relative',
-          overflow: 'hidden',
-          boxShadow: 'var(--shadow-md)',
-        }}
-      >
-        <div style={{ position: 'relative', zIndex: 2, maxWidth: '750px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
-            <h1 style={{ fontSize: '20px', fontWeight: '800', color: '#ffffff', margin: 0 }}>
-              Xin chào, {currentUser?.name}! 👋
-            </h1>
-            <Badge variant="purple" size="sm">
-              {currentUser?.roleName}
-            </Badge>
-          </div>
-          <p style={{ fontSize: '13px', color: '#cbd5e1', lineHeight: '1.6', margin: 0 }}>
-            Không gian học tập, tra cứu, luyện tập và đánh giá năng lực toàn diện. Bạn đang làm việc trong phạm vi{' '}
-            <strong>{currentUser?.unit}</strong> ({currentUser?.department}).
-          </p>
-        </div>
-      </section>
+      <div className="border-b border-slate-200 dark:border-slate-800 pb-3"><h2 className="text-sm font-semibold">Xin chào, {currentUser?.name}</h2><p className="mt-1 text-xs text-slate-500">{currentUser?.unit} · {currentUser?.department}</p></div>
 
       {/* Quick Start Actions */}
       <section>
@@ -115,7 +78,7 @@ export default function DashboardPage() {
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))',
             gap: '14px',
           }}
         >
@@ -157,7 +120,7 @@ export default function DashboardPage() {
       </section>
 
       {/* Main Dashboard Grid: Việc cần làm & Khóa học đang học */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))', gap: '20px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 360px), 1fr))', gap: '20px' }}>
         {/* Việc cần làm (To-Do List) */}
         <Card style={{ padding: '20px' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
@@ -278,7 +241,7 @@ export default function DashboardPage() {
           </Button>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '16px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 320px), 1fr))', gap: '16px' }}>
           {exams.map((exam) => (
             <Card key={exam.id} hoverable style={{ padding: '18px' }} onClick={() => navigate(`/app/exams/${exam.id}`)}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '10px' }}>
@@ -307,6 +270,6 @@ export default function DashboardPage() {
           ))}
         </div>
       </section>
-    </div>
+    </div></ManagementFrame>
   );
 }

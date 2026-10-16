@@ -1,4 +1,5 @@
-import React, { useState, useRef, useEffect, useMemo } from 'react';
+import React, { useState, useRef, useEffect, useMemo, useLayoutEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { ChevronDown, Check, Search, X } from 'lucide-react';
 
 /**
@@ -30,7 +31,8 @@ export default function Select({
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [openUpward, setOpenUpward] = useState(false);
+  const [menuStyle, setMenuStyle] = useState({});
+  const menuRef = useRef(null);
 
   const containerRef = useRef(null);
   const searchInputRef = useRef(null);
@@ -73,33 +75,29 @@ export default function Select({
   // Determine if search input should be visible
   const showSearch = searchable || normalizedOptions.length > 8;
 
-  // Auto detect direction (up/down) when opening
-  useEffect(() => {
-    if (isOpen && containerRef.current) {
-      if (placement === 'top') {
-        setOpenUpward(true);
-      } else if (placement === 'bottom') {
-        setOpenUpward(false);
-      } else {
-        const rect = containerRef.current.getBoundingClientRect();
-        const spaceBelow = window.innerHeight - rect.bottom;
-        const spaceAbove = rect.top;
-        if (spaceBelow < 230 && spaceAbove > spaceBelow) {
-          setOpenUpward(true);
-        } else {
-          setOpenUpward(false);
-        }
-      }
-
-      // Auto focus search input if present
-      if (showSearch) {
-        setTimeout(() => {
-          searchInputRef.current?.focus();
-        }, 60);
-      }
-    } else {
-      setSearchQuery('');
-    }
+  // Fixed positioning avoids clipping in modal/toolbar scroll containers.
+  useLayoutEffect(() => {
+    if (!isOpen) { setSearchQuery(''); return; }
+    const position = () => {
+      const button = containerRef.current?.querySelector('button');
+      if (!button) return;
+      const rect = button.getBoundingClientRect();
+      const below = window.innerHeight - rect.bottom - 12;
+      const above = rect.top - 12;
+      const upward = placement === 'top' || (placement !== 'bottom' && below < 240 && above > below);
+      const width = Math.min(Math.max(rect.width, 200), window.innerWidth - 24);
+      setMenuStyle({
+        position: 'fixed', width, left: Math.max(12, Math.min(rect.left, window.innerWidth - width - 12)),
+        top: upward ? undefined : rect.bottom + 6,
+        bottom: upward ? window.innerHeight - rect.top + 6 : undefined,
+        maxHeight: Math.max(0, upward ? above : below),
+      });
+    };
+    position();
+    window.addEventListener('resize', position);
+    window.addEventListener('scroll', position, true);
+    const frame = requestAnimationFrame(() => { if (showSearch) searchInputRef.current?.focus(); });
+    return () => { cancelAnimationFrame(frame); window.removeEventListener('resize', position); window.removeEventListener('scroll', position, true); };
   }, [isOpen, placement, showSearch]);
 
   // Close on click outside and escape key
@@ -107,7 +105,7 @@ export default function Select({
     if (!isOpen) return;
 
     const handleClickOutside = (e) => {
-      if (containerRef.current && !containerRef.current.contains(e.target)) {
+      if (containerRef.current && !containerRef.current.contains(e.target) && !menuRef.current?.contains(e.target)) {
         setIsOpen(false);
       }
     };
@@ -149,9 +147,9 @@ export default function Select({
 
   // Size styling tokens
   const sizeStyles = {
-    sm: 'h-8 text-xs px-2.5',
-    md: 'h-9 text-xs px-3',
-    lg: 'h-10 text-sm px-3.5',
+    sm: 'min-h-8 text-xs px-2.5 py-1',
+    md: 'min-h-9 text-xs px-3 py-1.5',
+    lg: 'min-h-10 text-sm px-3.5 py-2',
   };
 
   const hasValue = value !== '' && value !== null && value !== undefined;
@@ -177,12 +175,12 @@ export default function Select({
           disabled
             ? 'bg-slate-100 dark:bg-slate-900/60 border-slate-200 dark:border-slate-800 text-slate-400 dark:text-slate-500 cursor-not-allowed'
             : isOpen
-            ? 'bg-white dark:bg-slate-900 border-emerald-600 dark:border-emerald-500 ring-2 ring-emerald-500/15 text-slate-900 dark:text-white shadow-xs'
+            ? 'bg-white dark:bg-slate-900 border-emerald-600 dark:border-emerald-500 ring-0 text-slate-900 dark:text-white'
             : 'bg-white dark:bg-slate-900 border-slate-200/90 dark:border-slate-700/80 text-slate-800 dark:text-slate-100 hover:border-slate-300 dark:hover:border-slate-600'
         } ${error ? 'border-rose-500 focus:border-rose-500 ring-2 ring-rose-500/15' : ''}`}
         {...props}
       >
-        <div className="flex items-center gap-2 truncate flex-1 min-w-0">
+        <div className="flex items-center gap-2 flex-1 min-w-0">
           {Icon && (
             <Icon
               size={size === 'sm' ? 13 : 15}
@@ -193,11 +191,11 @@ export default function Select({
           )}
 
           {currentOption ? (
-            <span className="truncate text-slate-900 dark:text-slate-100">
+            <span className="whitespace-normal break-words text-slate-900 dark:text-slate-100">
               {currentOption.label}
             </span>
           ) : (
-            <span className="truncate text-slate-400 dark:text-slate-500">
+            <span className="whitespace-normal break-words text-slate-400 dark:text-slate-500">
               {placeholder}
             </span>
           )}
@@ -227,16 +225,16 @@ export default function Select({
       </button>
 
       {/* Standardized Dropdown Menu Panel ("chỗ đổ danh sách xuống") */}
-      {isOpen && (
+      {isOpen && createPortal(
         <div
+          ref={menuRef}
+          style={menuStyle}
           role="listbox"
-          className={`absolute left-0 w-full min-w-[200px] z-[99999] bg-white dark:bg-slate-900 rounded-xl border border-slate-200/90 dark:border-slate-800 shadow-2xl shadow-slate-900/15 dark:shadow-black/70 overflow-hidden transform transition-all animate-in fade-in zoom-in-95 duration-150 ${
-            openUpward ? 'bottom-full mb-1.5 origin-bottom' : 'top-full mt-1.5 origin-top'
-          }`}
+          className="z-[100001] flex flex-col bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 shadow-none overflow-hidden"
         >
           {/* Quick Search inside dropdown if list is long */}
           {showSearch && (
-            <div className="p-2 border-b border-slate-100 dark:border-slate-800/80 bg-slate-50/60 dark:bg-slate-950/40">
+            <div className="shrink-0 p-2 border-b border-slate-100 dark:border-slate-800/80 bg-slate-50/60 dark:bg-slate-950/40">
               <div className="relative flex items-center">
                 <Search size={13} className="absolute left-2.5 text-slate-400 pointer-events-none" />
                 <input
@@ -261,7 +259,7 @@ export default function Select({
           )}
 
           {/* Scrollable List Container ("danh sách cuộn") */}
-          <div className="max-h-56 overflow-y-auto p-1.5 space-y-0.5 text-xs [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-slate-200 dark:[&::-webkit-scrollbar-thumb]:bg-slate-700 [&::-webkit-scrollbar-thumb]:rounded-full">
+          <div className="min-h-0 max-h-72 overflow-y-auto p-1.5 space-y-0.5 text-xs [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-slate-200 dark:[&::-webkit-scrollbar-thumb]:bg-slate-700 [&::-webkit-scrollbar-thumb]:rounded-full">
             {/* Top Reset / All option if placeholder is configured */}
             {placeholder && (
               <button
@@ -273,7 +271,7 @@ export default function Select({
                     : 'text-slate-500 dark:text-slate-400 hover:bg-slate-100/70 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-100'
                 }`}
               >
-                <span className="truncate">{placeholder}</span>
+                <span className="whitespace-normal break-words">{placeholder}</span>
                 {!hasValue && (
                   <Check size={13} className="text-emerald-600 dark:text-emerald-400 shrink-0 ml-2" />
                 )}
@@ -297,11 +295,11 @@ export default function Select({
                       opt.disabled
                         ? 'opacity-40 cursor-not-allowed text-slate-400'
                         : isSelected
-                        ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 font-semibold border border-emerald-200/60 dark:border-emerald-800/40 shadow-2xs'
+                        ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 font-semibold border border-emerald-200/60 dark:border-emerald-800/40'
                         : 'text-slate-700 dark:text-slate-200 font-medium hover:bg-slate-100/70 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'
                     }`}
                   >
-                    <div className="flex items-center gap-2 truncate pr-2 min-w-0">
+                    <div className="flex items-center gap-2 pr-2 min-w-0">
                       {opt.icon && (
                         <opt.icon
                           size={14}
@@ -310,7 +308,7 @@ export default function Select({
                           }`}
                         />
                       )}
-                      <span className="truncate">{opt.label}</span>
+                      <span className="whitespace-normal break-words">{opt.label}</span>
                     </div>
 
                     <div className="flex items-center gap-1.5 shrink-0 ml-2">
@@ -331,7 +329,8 @@ export default function Select({
               })
             )}
           </div>
-        </div>
+        </div>,
+        containerRef.current?.closest('[role="dialog"]') || document.body
       )}
 
       {error && <span className="text-[11px] font-medium text-rose-600">{error}</span>}

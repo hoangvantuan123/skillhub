@@ -1,5 +1,5 @@
+import ManagementFrame from '../../../shared/ui/ManagementFrame';
 import React, { useState, useEffect } from 'react';
-import PageHeader from '../../../shared/components/PageHeader';
 import Card from '../../../shared/ui/Card';
 import Input from '../../../shared/ui/Input';
 import Button from '../../../shared/ui/Button';
@@ -10,7 +10,7 @@ import { useAuth } from '../../../shared/hooks/useAuth';
 import { useToast } from '../../../shared/hooks/useToast';
 import { mockApi } from '../../../mocks/mockService';
 import { formatDate } from '../../../shared/lib/formatters';
-import { Settings, Shield, User, Globe, CheckCircle2 } from 'lucide-react';
+
 
 export default function SettingsPage() {
   const { currentUser } = useAuth();
@@ -57,15 +57,13 @@ export default function SettingsPage() {
   ];
 
   return (
-    <div>
-      <PageHeader
-        title="Cài đặt & Nhật ký kiểm toán"
-        subtitle="Quản lý hồ sơ cá nhân, thiết lập múi giờ tổ chức và giám sát nhật ký hành động hệ thống."
-      />
+    <ManagementFrame className="management-screen"
+header={<><div className="management-tabs"><Tabs tabs={tabs} activeTab={activeTab} onChange={setActiveTab} />{null}</div><div className="management-actions">{null}{null}</div></>}
 
-      <Tabs tabs={tabs} activeTab={activeTab} onChange={setActiveTab} />
-
-      {activeTab === 'profile' && (
+status={<><strong>{"Cài đặt & Nhật ký kiểm toán"}</strong></>}
+>
+<div className="management-body-scroll">
+{activeTab === 'profile' && (
         <Card style={{ padding: '24px', maxWidth: '640px' }}>
           <h3 style={{ fontSize: '15px', fontWeight: '700', marginBottom: '16px', color: 'var(--navy)' }}>
             Thông tin người dùng hiện tại
@@ -84,8 +82,7 @@ export default function SettingsPage() {
           </div>
         </Card>
       )}
-
-      {activeTab === 'org' && (
+{activeTab === 'org' && (
         <Card style={{ padding: '24px', maxWidth: '640px' }}>
           <h3 style={{ fontSize: '15px', fontWeight: '700', marginBottom: '16px', color: 'var(--navy)' }}>
             Thiết lập thời gian & Chuẩn tổ chức
@@ -116,8 +113,7 @@ export default function SettingsPage() {
           </div>
         </Card>
       )}
-
-      {activeTab === 'audit' && (
+{activeTab === 'audit' && (
         <Card style={{ padding: '0', overflow: 'hidden' }}>
           <div style={{ padding: '16px 20px', borderBottom: '1px solid var(--line-subtle)' }}>
             <strong style={{ fontSize: '14px', color: 'var(--navy)' }}>
@@ -130,6 +126,8 @@ export default function SettingsPage() {
           <Table columns={auditColumns} data={auditLogs} />
         </Card>
       )}
-    </div>
+</div>
+
+</ManagementFrame>
   );
 }

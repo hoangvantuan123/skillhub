@@ -1,3 +1,4 @@
+import ManagementFrame from '../../../shared/ui/ManagementFrame';
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Card from '../../../shared/ui/Card';
@@ -5,7 +6,7 @@ import Button from '../../../shared/ui/Button';
 import Badge from '../../../shared/ui/Badge';
 import { mockApi } from '../../../mocks/mockService';
 import { useAuth } from '../../../shared/hooks/useAuth';
-import { ArrowLeft, CheckCircle2, Wifi, ShieldAlert, Clock, ArrowRight } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, Clock, ArrowRight } from 'lucide-react';
 
 export default function ExamLobbyPage() {
   const navigate = useNavigate();
@@ -35,7 +36,7 @@ export default function ExamLobbyPage() {
   if (!exam) return <div style={{ padding: '40px', textAlign: 'center' }}>Đang nạp phòng thi...</div>;
 
   return (
-    <div style={{ maxWidth: '720px', margin: '40px auto', padding: '0 16px' }}>
+    <ManagementFrame className="management-screen" header={<span className="management-tab-active">Thông tin</span>} status={<strong>Chuẩn bị vào thi</strong>}><div className="management-body-scroll">
       <Card style={{ padding: '32px' }}>
         <div style={{ textAlign: 'center', marginBottom: '24px' }}>
           <Badge variant="purple" size="md">Phòng chờ thi trực tuyến (Exam Lobby)</Badge>
@@ -103,6 +104,6 @@ export default function ExamLobbyPage() {
           </Button>
         </div>
       </Card>
-    </div>
+    </div></ManagementFrame>
   );
 }

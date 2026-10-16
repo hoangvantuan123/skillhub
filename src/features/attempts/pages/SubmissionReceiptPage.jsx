@@ -1,9 +1,10 @@
+import ManagementFrame from '../../../shared/ui/ManagementFrame';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import Card from '../../../shared/ui/Card';
 import Button from '../../../shared/ui/Button';
 import Badge from '../../../shared/ui/Badge';
-import { CheckCircle2, FileCheck, ArrowRight, Home, Award } from 'lucide-react';
+import { CheckCircle2, Home, Award } from 'lucide-react';
 import { formatDate } from '../../../shared/lib/formatters';
 
 export default function SubmissionReceiptPage() {
@@ -13,7 +14,7 @@ export default function SubmissionReceiptPage() {
   const receiptNumber = searchParams.get('receipt') || 'RCPT-SKH-9281';
 
   return (
-    <div style={{ maxWidth: '640px', margin: '40px auto', padding: '0 16px' }}>
+    <ManagementFrame className="management-screen" header={<span className="management-tab-active">Thông tin</span>} status={<strong>Kết quả nộp bài</strong>}><div className="management-body-scroll">
       <Card style={{ padding: '36px', textAlign: 'center' }}>
         <div
           style={{
@@ -69,6 +70,6 @@ export default function SubmissionReceiptPage() {
           </Button>
         </div>
       </Card>
-    </div>
+    </div></ManagementFrame>
   );
 }

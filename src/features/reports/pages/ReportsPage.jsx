@@ -1,10 +1,10 @@
+import ManagementFrame from '../../../shared/ui/ManagementFrame';
 import React, { useState } from 'react';
-import PageHeader from '../../../shared/components/PageHeader';
 import Card from '../../../shared/ui/Card';
 import Badge from '../../../shared/ui/Badge';
 import Button from '../../../shared/ui/Button';
 import Tabs from '../../../shared/ui/Tabs';
-import { Award, CheckCircle2, TrendingUp, AlertTriangle, Download, BarChart2 } from 'lucide-react';
+import { Download } from 'lucide-react';
 import { useAuth } from '../../../shared/hooks/useAuth';
 
 export default function ReportsPage() {
@@ -47,20 +47,15 @@ export default function ReportsPage() {
   ];
 
   return (
-    <div>
-      <PageHeader
-        title="Kết quả thi & Báo cáo năng lực"
-        subtitle="Theo dõi kết quả các đợt thi đã công bố, ma trận đánh giá năng lực theo từng chủ đề và khuyến nghị học bổ sung."
-        actions={
-          <Button variant="outline" icon={Download} onClick={() => alert('Đang xuất báo cáo định dạng PDF/CSV...')}>
+    <ManagementFrame className="management-screen"
+header={<><div className="management-tabs"><Tabs tabs={tabs} activeTab={activeTab} onChange={setActiveTab} />{null}</div><div className="management-actions">{null}{<Button variant="outline" icon={Download} onClick={() => alert('Đang xuất báo cáo định dạng PDF/CSV...')}>
             Xuất báo cáo (CSV)
-          </Button>
-        }
-      />
+          </Button>}</div></>}
 
-      <Tabs tabs={tabs} activeTab={activeTab} onChange={setActiveTab} />
-
-      {activeTab === 'personal' && (
+status={<><strong>{"Kết quả thi & Báo cáo năng lực"}</strong></>}
+>
+<div className="management-body-scroll">
+{activeTab === 'personal' && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           {personalAttempts.map((att) => (
             <Card key={att.id} style={{ padding: '22px' }}>
@@ -80,8 +75,7 @@ export default function ReportsPage() {
           ))}
         </div>
       )}
-
-      {activeTab === 'topics' && (
+{activeTab === 'topics' && (
         <Card style={{ padding: '24px' }}>
           <h3 style={{ fontSize: '15px', fontWeight: '700', marginBottom: '16px', color: 'var(--navy)' }}>
             Mức độ thành thạo theo từng chủ đề kiến thức
@@ -113,8 +107,7 @@ export default function ReportsPage() {
           </div>
         </Card>
       )}
-
-      {activeTab === 'group' && (
+{activeTab === 'group' && (
         <Card style={{ padding: '24px' }}>
           <h3 style={{ fontSize: '15px', fontWeight: '700', marginBottom: '8px', color: 'var(--navy)' }}>
             Phổ điểm chung của đơn vị ({currentUser?.unit})
@@ -142,6 +135,8 @@ export default function ReportsPage() {
           </div>
         </Card>
       )}
-    </div>
+</div>
+
+</ManagementFrame>
   );
 }

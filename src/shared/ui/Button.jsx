@@ -45,7 +45,7 @@ export default function Button({
       border: '1px solid var(--color-primary-200)',
     },
     outline: {
-      background: '#ffffff',
+      background: 'var(--surface-card)',
       color: 'var(--navy)',
       border: '1px solid var(--line)',
     },

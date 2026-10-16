@@ -1,16 +1,14 @@
+import ManagementList from '../../../shared/ui/ManagementList';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import PageHeader from '../../../shared/components/PageHeader';
-import SearchFilter from '../../../shared/components/SearchFilter';
-import Card from '../../../shared/ui/Card';
+
 import Badge from '../../../shared/ui/Badge';
 import Button from '../../../shared/ui/Button';
 import Input from '../../../shared/ui/Input';
 import Modal from '../../../shared/ui/Modal';
-import Table from '../../../shared/ui/Table';
 import { mockApi } from '../../../mocks/mockService';
 import { useToast } from '../../../shared/hooks/useToast';
-import { Users, Plus, UserPlus, Shield, CheckCircle2, ArrowRight } from 'lucide-react';
+import { Users, Plus, UserPlus, CheckCircle2 } from 'lucide-react';
 
 export default function GroupsPage() {
   const navigate = useNavigate();
@@ -138,37 +136,20 @@ export default function GroupsPage() {
   ];
 
   return (
-    <div>
-      <PageHeader
-        title="Lớp học & Nhóm thành viên"
-        subtitle="Tổ chức người học theo nhóm chuyên môn (MES, Kiến trúc, Frontend) để phân công bộ đề thi và lộ trình học tập."
-        actions={
-          <div style={{ display: 'flex', gap: '10px' }}>
+    <>
+<ManagementList title={"Lớp học & Nhóm thành viên"} actions={<div style={{ display: 'flex', gap: '10px' }}>
             <Button variant="outline" icon={Users} onClick={() => navigate('/admin/users')}>
               Quản lý tài khoản & Phân quyền
             </Button>
             <Button variant="primary" icon={Plus} onClick={() => setShowAddGroupModal(true)}>
               Tạo nhóm mới
             </Button>
-          </div>
-        }
-      />
-
-      <SearchFilter
-        searchValue={search}
-        onSearchChange={setSearch}
-        placeholder="Tìm kiếm theo tên nhóm, mã lớp..."
-      />
-
-      <Card style={{ padding: '0', overflow: 'hidden' }}>
-        <Table columns={columns} data={filtered} />
-      </Card>
-
-      {/* Modal Tạo nhóm mới */}
-      <Modal
+          </div>} columns={columns} data={groups} searchPlaceholder={"Tìm kiếm theo tên nhóm, mã lớp..."} />
+<Modal
         open={showAddGroupModal}
         onClose={() => setShowAddGroupModal(false)}
         title="Tạo nhóm học viên / Lớp học mới"
+        density="comfortable"
         footer={
           <>
             <Button variant="outline" onClick={() => setShowAddGroupModal(false)}>
@@ -220,12 +201,11 @@ export default function GroupsPage() {
           </div>
         </div>
       </Modal>
-
-      {/* Modal Thêm học viên vào nhóm */}
-      <Modal
+<Modal
         open={showAssignMemberModal}
         onClose={() => setShowAssignMemberModal(false)}
         title={`Thêm học viên vào nhóm: ${selectedGroup?.name}`}
+        density="comfortable"
         footer={
           <>
             <Button variant="outline" onClick={() => setShowAssignMemberModal(false)}>
@@ -274,6 +254,6 @@ export default function GroupsPage() {
           </div>
         </div>
       </Modal>
-    </div>
+</>
   );
 }

@@ -1,12 +1,12 @@
+import ManagementFrame from '../../../shared/ui/ManagementFrame';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import PageHeader from '../../../shared/components/PageHeader';
 import SearchFilter from '../../../shared/components/SearchFilter';
 import Card from '../../../shared/ui/Card';
 import Button from '../../../shared/ui/Button';
 import Badge from '../../../shared/ui/Badge';
 import { mockApi } from '../../../mocks/mockService';
-import { BookOpen, Clock, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { Clock, ArrowRight } from 'lucide-react';
 
 export default function CourseListPage() {
   const navigate = useNavigate();
@@ -22,19 +22,17 @@ export default function CourseListPage() {
   );
 
   return (
-    <div>
-      <PageHeader
-        title="Khóa học & Học liệu chuyên môn"
-        subtitle="Học tập theo lộ trình kỹ năng, theo dõi tiến độ hoàn thành và tra cứu tài liệu liên quan."
-      />
-
-      <SearchFilter
+    <ManagementFrame className="management-screen"
+header={<><div className="management-tabs"><span className="management-tab-active">Danh sách</span>{null}</div><div className="management-actions">{null}{null}</div></>}
+filters={<SearchFilter
         searchValue={search}
         onSearchChange={setSearch}
         placeholder="Tìm kiếm khóa học theo tên, danh mục..."
-      />
-
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '20px' }}>
+      />}
+status={<><strong>{"Khóa học & Học liệu chuyên môn"}</strong><span>Tổng số: {courses.length}</span></>}
+>
+<div className="management-body-scroll">
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 340px), 1fr))', gap: '20px' }}>
         {filtered.map((course) => (
           <Card key={course.id} hoverable style={{ padding: '22px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
@@ -80,6 +78,8 @@ export default function CourseListPage() {
           </Card>
         ))}
       </div>
-    </div>
+</div>
+
+</ManagementFrame>
   );
 }

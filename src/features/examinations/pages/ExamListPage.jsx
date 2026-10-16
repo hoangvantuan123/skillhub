@@ -1,33 +1,73 @@
+import ManagementFrame from '../../../shared/ui/ManagementFrame';
+import VirtualDataTable from '../../../shared/ui/VirtualDataTable';
+import TableFilters from '../../../shared/ui/TableFilters';
+import Tabs from '../../../shared/ui/Tabs';
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import SearchInput from '../../../shared/ui/SearchInput';
-import Select from '../../../shared/ui/Select';
+
+
 import Button from '../../../shared/ui/Button';
 import Badge from '../../../shared/ui/Badge';
 import { mockApi } from '../../../mocks/mockService';
 import { formatDate } from '../../../shared/lib/formatters';
-import {
-  Calendar,
-  Clock,
-  Users,
-  ArrowRight,
-  ShieldCheck,
-  CheckCircle2,
-  LayoutGrid,
-  List,
-  MapPin,
-  FileText,
-  Sliders,
-  Plus,
-  ChevronsLeft,
-  ChevronLeft,
-  ChevronRight,
-  ChevronsRight,
-  Layers,
-} from 'lucide-react';
+import { Calendar, Clock, ArrowRight, ShieldCheck, LayoutGrid, List, MapPin, Sliders, ChevronLeft, ChevronRight } from 'lucide-react';
+
+const TABLE_COLUMNS = [
+  {
+    "id": "code",
+    "label": "Mã ca thi",
+    "width": 150
+  },
+  {
+    "id": "title",
+    "label": "Tên kỳ thi",
+    "width": 350
+  },
+  {
+    "id": "description",
+    "label": "Mô tả",
+    "width": 300
+  },
+  {
+    "id": "durationMinutes",
+    "label": "Thời lượng",
+    "width": 100
+  },
+  {
+    "id": "startTime",
+    "label": "Mở ca",
+    "width": 160
+  },
+  {
+    "id": "location",
+    "label": "Vị trí",
+    "width": 190
+  },
+  {
+    "id": "status",
+    "label": "Trạng thái",
+    "width": 130
+  },
+  {
+    "id": "actions",
+    "label": "Thao tác",
+    "width": 90
+  }
+];
 
 export default function ExamListPage() {
   const navigate = useNavigate();
+  const [fieldFilters, setFieldFilters] = useState({ status: '', location: '' });
+  const formatField = (column, row) => {
+    if (column.id === 'startTime') return formatDate(row.startTime);
+    if (column.id === 'status') return row.statusLabel || ({published:'Đã xuất bản',draft:'Bản nháp',scheduled:'Sắp diễn ra',in_progress:'Đang mở ca',completed:'Đã hoàn tất'})[row.status] || row.status || '—';
+    if (column.id === 'examType') return row.examType === 'official_exam' ? 'Sát hạch' : 'Luyện tập';
+    if (column.id === 'durationMinutes') return (row.durationMinutes || 45) + ' phút';
+    if (column.id === 'questionCount') return String(row.questionCount || row.questions?.length || 40);
+    if (column.id === 'actions') return 'Xem';
+    return String(row[column.id] ?? '—');
+  };
+
   const [exams, setExams] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -37,10 +77,11 @@ export default function ExamListPage() {
   const [selectedLocation, setSelectedLocation] = useState('');
 
   // View Mode: 'cards' | 'table' (Support both!)
-  const [viewMode, setViewMode] = useState('cards');
+  const [viewMode, setViewMode] = useState('table');
 
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
+  const [sort, setSort] = useState({ field: 'code', ascending: true });
   const [pageSize, setPageSize] = useState(12);
 
   useEffect(() => {
@@ -55,7 +96,7 @@ export default function ExamListPage() {
   }, []);
 
   const filtered = useMemo(() => {
-    return exams.filter((e) => {
+    return exams.filter(row => Object.entries(fieldFilters).every(([key, query]) => !query || formatField({id:key}, row).toLocaleLowerCase('vi').includes(query.toLocaleLowerCase('vi')))).filter((e) => {
       const matchSearch =
         !search ||
         e.title.toLowerCase().includes(search.toLowerCase()) ||
@@ -64,40 +105,22 @@ export default function ExamListPage() {
       const matchLocation = !selectedLocation || e.location === selectedLocation;
       return matchSearch && matchStatus && matchLocation;
     });
-  }, [exams, search, selectedStatus, selectedLocation]);
+  }, [exams, search, selectedStatus, selectedLocation, fieldFilters]);
 
   const totalPages = Math.ceil(filtered.length / pageSize) || 1;
   const currentPageSafe = Math.min(currentPage, totalPages);
   const pagedExams = useMemo(() => {
     const start = (currentPageSafe - 1) * pageSize;
-    return filtered.slice(start, start + pageSize);
-  }, [filtered, currentPageSafe, pageSize]);
+    const sorted = [...filtered].sort((a, b) => {
+      const av = a[sort.field]; const bv = b[sort.field];
+      const compare = typeof av === 'number' && typeof bv === 'number' ? av - bv : formatField({id:sort.field}, a).localeCompare(formatField({id:sort.field}, b), 'vi', {numeric:true});
+      return sort.ascending ? compare : -compare;
+    });
+    return sorted.slice(start, start + pageSize);
+  }, [filtered, currentPageSafe, pageSize, sort]);
 
   return (
-    <div className="flex flex-col h-full overflow-hidden bg-white dark:bg-slate-950">
-      {/* 1. TOP CONTROL BAR */}
-      <div className="bg-white dark:bg-slate-900 border-b border-slate-200/90 dark:border-slate-800 p-3 sm:p-4 shrink-0">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold">
-              <Layers size={18} />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <h1 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white tracking-tight">
-                  Tổ chức Ca thi & Kỳ thi Sát hạch
-                </h1>
-                <span className="hidden md:inline-flex px-2 py-0.5 rounded-md text-[11px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
-                  {exams.length} ca thi
-                </span>
-              </div>
-              <div className="text-xs text-slate-500 dark:text-slate-400">
-                Lịch trình khảo thí, trạm thi thực tế, hạn nộp cứng và phòng thi trực tuyến.
-              </div>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2">
+    <ManagementFrame className="management-screen" header={<><Tabs tabs={[{id:'table',label:'Danh sách',icon:List},{id:'cards',label:'Dạng thẻ',icon:LayoutGrid}]} activeTab={viewMode} onChange={setViewMode} /><div className="management-actions"><div className="flex items-center gap-2">
             <Button
               variant="outline"
               size="sm"
@@ -107,84 +130,33 @@ export default function ExamListPage() {
             >
               Cấu hình đề thi & luyện
             </Button>
-          </div>
+          </div></div></>} filters={<TableFilters fields={TABLE_COLUMNS} data={exams} filters={fieldFilters} onChange={next => { setFieldFilters(next); setCurrentPage(1); }} search={search} onSearchChange={value => { setSearch(value); setCurrentPage(1); }} formatCell={formatField} />} status={<div className="contents">
+        <div className="flex flex-wrap items-center gap-2"><strong>Ca thi & Kỳ thi</strong><div>
+          Hiển thị <strong className="text-slate-900 dark:text-white">{pagedExams.length}</strong> trong <strong className="text-slate-900 dark:text-white">{filtered.length}</strong> ca thi
+        </div></div>
+        <div className="flex items-center gap-1">
+          <Button
+            variant="outline"
+            size="sm"
+            icon={ChevronLeft}
+            disabled={currentPageSafe <= 1}
+            onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+            className="!h-8 !w-8 !p-0"
+          />
+          <span className="px-2 font-semibold">
+            {currentPageSafe} / {totalPages}
+          </span>
+          <Button
+            variant="outline"
+            size="sm"
+            icon={ChevronRight}
+            disabled={currentPageSafe >= totalPages}
+            onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+            className="!h-8 !w-8 !p-0"
+          />
         </div>
-
-        {/* Row 2: Filters & View Switcher */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
-          <div className="flex flex-col sm:flex-row sm:items-center gap-2 flex-1 w-full flex-wrap">
-            <div className="w-full sm:w-64 md:w-72">
-              <SearchInput
-                size="sm"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                onClear={() => setSearch('')}
-                placeholder="Tìm kiếm tên kỳ thi, mã ca thi..."
-              />
-            </div>
-
-            <div className="w-full sm:w-44">
-              <Select
-                size="sm"
-                placeholder="Tất cả trạng thái"
-                value={selectedStatus}
-                onChange={(e) => setSelectedStatus(e.target.value)}
-                options={[
-                  { value: 'scheduled', label: 'Sắp diễn ra' },
-                  { value: 'in_progress', label: 'Đang mở ca' },
-                  { value: 'completed', label: 'Đã hoàn tất' },
-                ]}
-              />
-            </div>
-
-            <div className="w-full sm:w-48">
-              <Select
-                size="sm"
-                placeholder="Tất cả vị trí / xưởng"
-                value={selectedLocation}
-                onChange={(e) => setSelectedLocation(e.target.value)}
-                options={[
-                  { value: 'Xưởng In Offset — Trạm HMI 01', label: 'Xưởng In Offset' },
-                  { value: 'Xưởng SMT — Dây chuyền 04', label: 'Xưởng SMT 04' },
-                ]}
-              />
-            </div>
-          </div>
-
-          {/* View Mode Toggle: Card Grid vs Table */}
-          <div className="flex items-center gap-1 border border-slate-200 dark:border-slate-800 rounded-lg p-0.5 bg-slate-50 dark:bg-slate-900 shrink-0 self-end sm:self-auto">
-            <button
-              type="button"
-              onClick={() => setViewMode('cards')}
-              className={`p-1.5 rounded-md text-xs font-semibold flex items-center gap-1.5 transition-all ${
-                viewMode === 'cards'
-                  ? 'bg-white dark:bg-slate-800 text-slate-900 dark:text-white shadow-2xs'
-                  : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
-              }`}
-              title="Dạng thẻ"
-            >
-              <LayoutGrid size={14} />
-              <span className="hidden md:inline">Thẻ</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => setViewMode('table')}
-              className={`p-1.5 rounded-md text-xs font-semibold flex items-center gap-1.5 transition-all ${
-                viewMode === 'table'
-                  ? 'bg-white dark:bg-slate-800 text-slate-900 dark:text-white shadow-2xs'
-                  : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
-              }`}
-              title="Dạng bảng"
-            >
-              <List size={14} />
-              <span className="hidden md:inline">Bảng</span>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* 2. MAIN VIEWPORT */}
-      <div className="flex-1 min-h-0 w-full relative overflow-hidden bg-white dark:bg-slate-950 flex flex-col">
+      </div>}>
+<div className="flex-1 min-h-0 w-full relative overflow-hidden bg-white dark:bg-slate-950 flex flex-col">
         {/* VIEW 1: CARDS */}
         {viewMode === 'cards' && (
           <div className="flex-1 overflow-y-auto p-4 sm:p-5">
@@ -197,7 +169,7 @@ export default function ExamListPage() {
                 {pagedExams.map((exam) => (
                   <div
                     key={exam.id}
-                    className="rounded-2xl border border-slate-200/90 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 sm:p-5 flex flex-col justify-between hover:border-slate-300 dark:hover:border-slate-700 hover:shadow-md transition-all"
+                    className="rounded-md border border-slate-200/90 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 sm:p-5 flex flex-col justify-between hover:border-slate-300 dark:hover:border-slate-700  transition-all"
                   >
                     <div>
                       <div className="flex items-center justify-between gap-2 mb-2.5">
@@ -216,7 +188,7 @@ export default function ExamListPage() {
                       </p>
 
                       {/* Detail Metrics */}
-                      <div className="flex flex-col gap-1.5 p-3 rounded-xl bg-slate-50/70 dark:bg-slate-950/50 border border-slate-100 dark:border-slate-800 text-xs mb-3">
+                      <div className="flex flex-col gap-1.5 p-3 rounded-md bg-slate-50/70 dark:bg-slate-950/50 border border-slate-100 dark:border-slate-800 text-xs mb-3">
                         <div className="flex justify-between items-center text-slate-600 dark:text-slate-300">
                           <span className="text-slate-400 flex items-center gap-1">
                             <Clock size={12} /> Thời lượng:
@@ -267,91 +239,9 @@ export default function ExamListPage() {
         )}
 
         {/* VIEW 2: TABLE */}
-        {viewMode === 'table' && (
-          <div className="w-full h-full flex flex-col overflow-hidden">
-            <div className="hidden md:grid grid-cols-12 items-center px-4 py-2.5 bg-slate-100/90 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 text-xs font-semibold text-slate-600 dark:text-slate-300 shrink-0 sticky top-0 z-10">
-              <div className="col-span-2">Mã ca thi</div>
-              <div className="col-span-4">Tên kỳ thi / Nội dung</div>
-              <div className="col-span-1 text-center">Thời lượng</div>
-              <div className="col-span-2">Thời gian mở ca</div>
-              <div className="col-span-1">Vị trí thi</div>
-              <div className="col-span-1">Trạng thái</div>
-              <div className="col-span-1 text-right">Thao tác</div>
-            </div>
-
-            <div className="flex-1 overflow-y-auto divide-y divide-slate-100 dark:divide-slate-800/60 bg-white dark:bg-slate-950">
-              {pagedExams.map((exam) => (
-                <div
-                  key={exam.id}
-                  onClick={() => navigate(`/app/exams/${exam.id}`)}
-                  className="grid grid-cols-1 md:grid-cols-12 items-center px-4 py-3 cursor-pointer hover:bg-slate-50/80 dark:hover:bg-slate-900 transition-colors text-xs"
-                >
-                  <div className="md:col-span-2 font-mono font-bold text-blue-600 dark:text-blue-400">
-                    {exam.code}
-                  </div>
-                  <div className="md:col-span-4 pr-3">
-                    <div className="font-semibold text-slate-900 dark:text-white truncate">
-                      {exam.title}
-                    </div>
-                    <div className="text-[11px] text-slate-400 truncate mt-0.5">
-                      {exam.description}
-                    </div>
-                  </div>
-                  <div className="md:col-span-1 text-center font-bold text-slate-800 dark:text-slate-200">
-                    {exam.durationMinutes} phút
-                  </div>
-                  <div className="md:col-span-2 text-slate-500 dark:text-slate-400">
-                    {formatDate(exam.startTime)}
-                  </div>
-                  <div className="md:col-span-1 text-slate-500 dark:text-slate-400 truncate">
-                    {exam.location?.split('—')[0] || 'Xưởng thi'}
-                  </div>
-                  <div className="md:col-span-1">
-                    <Badge variant="success" size="sm">{exam.statusLabel || 'Đang mở'}</Badge>
-                  </div>
-                  <div className="md:col-span-1 flex justify-end">
-                    <button
-                      type="button"
-                      onClick={() => navigate(`/app/exams/${exam.id}`)}
-                      className="px-2.5 py-1 text-xs font-semibold rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-slate-50 transition-colors"
-                    >
-                      Chi tiết
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+        {viewMode === 'table' && <VirtualDataTable columns={TABLE_COLUMNS} rows={pagedExams} formatCell={formatField} onSort={field => { if (field !== 'actions') setSort(previous => ({field, ascending: previous.field === field ? !previous.ascending : true})); }} onOpen={row => navigate('/app/exams/' + row.id)}  />}
       </div>
 
-      {/* 3. PAGINATION FOOTER */}
-      <div className="bg-white dark:bg-slate-900 border-t border-slate-200/90 dark:border-slate-800 px-4 py-2.5 flex items-center justify-between text-xs text-slate-600 dark:text-slate-300 shrink-0 select-none">
-        <div>
-          Hiển thị <strong className="text-slate-900 dark:text-white">{pagedExams.length}</strong> trong <strong className="text-slate-900 dark:text-white">{filtered.length}</strong> ca thi
-        </div>
-        <div className="flex items-center gap-1">
-          <Button
-            variant="outline"
-            size="sm"
-            icon={ChevronLeft}
-            disabled={currentPageSafe <= 1}
-            onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-            className="!h-8 !w-8 !p-0"
-          />
-          <span className="px-2 font-semibold">
-            {currentPageSafe} / {totalPages}
-          </span>
-          <Button
-            variant="outline"
-            size="sm"
-            icon={ChevronRight}
-            disabled={currentPageSafe >= totalPages}
-            onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-            className="!h-8 !w-8 !p-0"
-          />
-        </div>
-      </div>
-    </div>
+</ManagementFrame>
   );
 }

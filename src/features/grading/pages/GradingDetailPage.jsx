@@ -1,14 +1,14 @@
+import ManagementFrame from '../../../shared/ui/ManagementFrame';
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import PageHeader from '../../../shared/components/PageHeader';
 import Card from '../../../shared/ui/Card';
-import Input from '../../../shared/ui/Input';
+
 import Button from '../../../shared/ui/Button';
 import Badge from '../../../shared/ui/Badge';
 import { mockApi } from '../../../mocks/mockService';
 import { useToast } from '../../../shared/hooks/useToast';
-import { formatDate, formatScore } from '../../../shared/lib/formatters';
-import { ArrowLeft, CheckCircle2, ShieldAlert, Award } from 'lucide-react';
+
+import { ArrowLeft, CheckCircle2 } from 'lucide-react';
 
 export default function GradingDetailPage() {
   const navigate = useNavigate();
@@ -59,28 +59,22 @@ export default function GradingDetailPage() {
   };
 
   return (
-    <div style={{ maxWidth: '880px', margin: '0 auto' }}>
-      <PageHeader
-        title={`Chấm bài thi: ${submission.candidateName}`}
-        subtitle={`Bài thi: ${submission.examTitle} · Nộp lúc: ${formatDate(submission.submittedAt)}`}
-        backAction={
-          <Button variant="ghost" size="sm" icon={ArrowLeft} onClick={() => navigate('/manage/grading')}>
+    <ManagementFrame className="management-screen"
+header={<><div className="management-tabs"><span className="management-tab-active">Chi tiết</span>{null}</div><div className="management-actions">{<Button variant="ghost" size="sm" icon={ArrowLeft} onClick={() => navigate('/manage/grading')}>
             Quay lại danh sách chấm
-          </Button>
-        }
-        actions={
-          <div style={{ display: 'flex', gap: '10px' }}>
+          </Button>}{<div style={{ display: 'flex', gap: '10px' }}>
             <Button variant="outline" onClick={handleSaveDraft}>
               Lưu điểm tạm
             </Button>
             <Button variant="primary" icon={CheckCircle2} onClick={handleFinalize}>
               Chốt điểm chính thức ({currentTotal}/{maxPossible}đ)
             </Button>
-          </div>
-        }
-      />
+          </div>}</div></>}
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '22px' }}>
+status={<><strong>{`Chấm bài thi: ${submission.candidateName}`}</strong></>}
+>
+<div className="management-body-scroll">
+<div style={{ display: 'flex', flexDirection: 'column', gap: '22px' }}>
         {/* Candidate essay answer */}
         <Card style={{ padding: '24px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
@@ -116,7 +110,7 @@ export default function GradingDetailPage() {
                   padding: '16px',
                   borderRadius: '10px',
                   border: '1px solid var(--line)',
-                  background: '#ffffff',
+                  background: 'var(--surface-card)',
                 }}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
@@ -189,6 +183,8 @@ export default function GradingDetailPage() {
           </div>
         </Card>
       </div>
-    </div>
+</div>
+
+</ManagementFrame>
   );
 }

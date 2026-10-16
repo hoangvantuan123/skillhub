@@ -1,11 +1,11 @@
+import ManagementFrame from '../../../shared/ui/ManagementFrame';
 import React, { useState, useEffect } from 'react';
-import PageHeader from '../../../shared/components/PageHeader';
 import Card from '../../../shared/ui/Card';
 import Badge from '../../../shared/ui/Badge';
 import Button from '../../../shared/ui/Button';
 import { mockApi } from '../../../mocks/mockService';
 import { useToast } from '../../../shared/hooks/useToast';
-import { Bell, CheckCheck, Clock } from 'lucide-react';
+import { CheckCheck } from 'lucide-react';
 
 export default function NotificationsPage() {
   const { addToast } = useToast();
@@ -22,18 +22,15 @@ export default function NotificationsPage() {
   };
 
   return (
-    <div style={{ maxWidth: '780px', margin: '0 auto' }}>
-      <PageHeader
-        title="Trung tâm thông báo"
-        subtitle="Thông báo nhắc lịch thi, kết quả chấm thi và tiến trình phê duyệt nội dung."
-        actions={
-          <Button variant="outline" icon={CheckCheck} onClick={handleMarkAllRead}>
+    <ManagementFrame className="management-screen"
+header={<><div className="management-tabs"><span className="management-tab-active">Danh sách</span>{null}</div><div className="management-actions">{null}{<Button variant="outline" icon={CheckCheck} onClick={handleMarkAllRead}>
             Đánh dấu tất cả đã đọc
-          </Button>
-        }
-      />
+          </Button>}</div></>}
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+status={<><strong>{"Trung tâm thông báo"}</strong><span>Tổng số: {notifications.length}</span></>}
+>
+<div className="management-body-scroll">
+<div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
         {notifications.map((n) => (
           <Card
             key={n.id}
@@ -56,6 +53,8 @@ export default function NotificationsPage() {
           </Card>
         ))}
       </div>
-    </div>
+</div>
+
+</ManagementFrame>
   );
 }

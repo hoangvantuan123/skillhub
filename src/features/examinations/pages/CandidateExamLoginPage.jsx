@@ -1,25 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Card from '../../../shared/ui/Card';
-import Input from '../../../shared/ui/Input';
-import Button from '../../../shared/ui/Button';
-import Badge from '../../../shared/ui/Badge';
 import { mockApi } from '../../../mocks/mockService';
 import { useAuth } from '../../../shared/hooks/useAuth';
 import { useToast } from '../../../shared/hooks/useToast';
-import {
-  LogIn,
-  KeyRound,
-  UserCheck,
-  ShieldAlert,
-  ArrowRight,
-  Sparkles,
-  ClipboardCheck,
-} from 'lucide-react';
+import { ShieldAlert, ArrowRight, Sparkles, ClipboardCheck } from 'lucide-react';
 
 export default function CandidateExamLoginPage() {
   const navigate = useNavigate();
-  const { setCurrentUser } = useAuth();
+  const { switchRole } = useAuth();
   const { addToast } = useToast();
 
   const [sbd, setSbd] = useState('tuan.hm@skillhub.vn');
@@ -39,20 +27,25 @@ export default function CandidateExamLoginPage() {
       setErrorMsg('Vui lòng nhập Số Báo Danh (SBD) hoặc Email thí sinh!');
       return;
     }
+    if (!passcode.trim()) {
+      setErrorMsg('Vui lòng nhập Mã bảo mật phòng thi (Passcode)!');
+      return;
+    }
 
     setLoading(true);
     setErrorMsg('');
 
     try {
       const res = await mockApi.verifyCandidatePasscode(sbd, passcode);
-      const { user, examId } = res.data;
+      const { user, examTitle } = res.data;
 
       // Log in candidate
-      await mockApi.switchRole(user.role);
-      addToast(`Xác thực thành công! Chào mừng thí sinh: ${user.name}`, 'success');
+      await mockApi.switchRole(user.id);
+      switchRole(user.id);
+      addToast(`Xác thực thành công! Đang vào ${examTitle}`, 'success');
 
-      // Navigate to candidate exams lobby
-      navigate('/exams');
+      // Navigate to candidate exams
+      navigate('/app/exams');
     } catch (err) {
       setErrorMsg(err.message || 'Mã đăng nhập hoặc Số Báo Danh không hợp lệ!');
     } finally {
@@ -61,132 +54,101 @@ export default function CandidateExamLoginPage() {
   };
 
   return (
-    <div style={{ minHeight: '85vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
-      <Card style={{ maxWidth: '520px', width: '100%', padding: '36px', boxShadow: '0 20px 40px -15px rgba(0,0,0,0.15)' }}>
-        {/* Header */}
-        <div style={{ textAlign: 'center', marginBottom: '28px' }}>
-          <div style={{ width: '56px', height: '56px', borderRadius: '16px', background: 'linear-gradient(135deg, #1d4ed8, #2563eb)', color: '#ffffff', display: 'grid', placeItems: 'center', margin: '0 auto 16px', boxShadow: '0 8px 20px rgba(37,99,235,0.35)' }}>
-            <ClipboardCheck size={30} />
-          </div>
-          <h2 style={{ fontSize: '20px', fontWeight: '800', color: 'var(--navy)', marginBottom: '8px' }}>
-            Cổng Đăng nhập & Vào Thi Đánh giá
-          </h2>
-          <p style={{ fontSize: '13px', color: 'var(--navy-muted)', margin: 0, lineHeight: '1.5' }}>
-            Dành cho thí sinh dự thi đánh giá năng lực chuẩn hóa MES & Kiến trúc hệ thống.
-          </p>
+    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg shadow-sm overflow-hidden p-6 sm:p-7">
+      {/* Header */}
+      <div className="text-center mb-6">
+        <div className="w-11 h-11 rounded-lg bg-emerald-600 text-white flex items-center justify-center mx-auto mb-3 shadow-xs">
+          <ClipboardCheck size={22} strokeWidth={2.2} />
         </div>
+        <h1 className="text-base font-bold text-slate-900 dark:text-slate-100">
+          Cổng Vào Phòng Thi Đánh Giá
+        </h1>
+        <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 max-w-sm mx-auto">
+          Dành cho thí sinh dự thi đánh giá chuẩn hóa năng lực MES & Kiến trúc hệ thống Goldsun Packaging.
+        </p>
+      </div>
 
-        {/* Demo Fast-track Pill */}
-        <div style={{ background: 'var(--color-primary-50)', border: '1px solid var(--color-primary-200)', borderRadius: '10px', padding: '12px 14px', marginBottom: '20px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', fontWeight: '700', color: 'var(--color-primary-700)', marginBottom: '8px' }}>
-            <Sparkles size={16} /> Thử nhanh thông tin thí sinh mẫu:
-          </div>
-          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-            <button
-              type="button"
-              onClick={() => handleFillDemo('tuan.hm@skillhub.vn', 'PASS-8001')}
-              style={{
-                fontSize: '11px',
-                padding: '5px 10px',
-                borderRadius: '6px',
-                background: '#ffffff',
-                border: '1px solid var(--color-primary-300)',
-                color: 'var(--color-primary-700)',
-                cursor: 'pointer',
-                fontWeight: '600',
-              }}
-            >
-              Kỹ sư Hoàng Minh Tuấn (Senior MES)
-            </button>
-            <button
-              type="button"
-              onClick={() => handleFillDemo('quan.tm@skillhub.vn', 'PASS-8891')}
-              style={{
-                fontSize: '11px',
-                padding: '5px 10px',
-                borderRadius: '6px',
-                background: '#ffffff',
-                border: '1px solid var(--color-primary-300)',
-                color: 'var(--color-primary-700)',
-                cursor: 'pointer',
-                fontWeight: '600',
-              }}
-            >
-              Kỹ sư Trần Minh Quân (Lead MES)
-            </button>
-          </div>
+      {/* Demo Fast-track Pill */}
+      <div className="bg-emerald-50/70 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-900/40 rounded-md p-3 mb-5">
+        <div className="flex items-center gap-1.5 text-xs font-semibold text-emerald-800 dark:text-emerald-300 mb-2">
+          <Sparkles size={14} className="text-emerald-600 dark:text-emerald-400" />
+          <span>Thử nhanh thông tin thí sinh mẫu:</span>
         </div>
-
-        {/* Login Form */}
-        <form onSubmit={handleLoginExam} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          <div>
-            <label style={{ fontSize: '13px', fontWeight: '700', color: 'var(--navy)', display: 'block', marginBottom: '6px' }}>
-              Số Báo Danh (SBD) hoặc Email thí sinh:
-            </label>
-            <input
-              type="text"
-              required
-              value={sbd}
-              onChange={(e) => setSbd(e.target.value)}
-              placeholder="VD: SBD-MES-202601 hoặc email@skillhub.vn"
-              style={{
-                width: '100%',
-                padding: '12px 14px',
-                borderRadius: '8px',
-                border: '1px solid var(--line)',
-                fontSize: '13px',
-                boxSizing: 'border-box',
-                outline: 'none',
-              }}
-            />
-          </div>
-
-          <div>
-            <label style={{ fontSize: '13px', fontWeight: '700', color: 'var(--navy)', display: 'block', marginBottom: '6px' }}>
-              Mã Đăng Nhập / Passcode ca thi:
-            </label>
-            <input
-              type="password"
-              required
-              value={passcode}
-              onChange={(e) => setPasscode(e.target.value)}
-              placeholder="VD: PASS-8001"
-              style={{
-                width: '100%',
-                padding: '12px 14px',
-                borderRadius: '8px',
-                border: '1px solid var(--line)',
-                fontSize: '13px',
-                boxSizing: 'border-box',
-                outline: 'none',
-              }}
-            />
-          </div>
-
-          {errorMsg && (
-            <div style={{ background: '#fef2f2', border: '1px solid #fecaca', borderRadius: '8px', padding: '10px 14px', color: '#b91c1c', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <ShieldAlert size={16} />
-              <span>{errorMsg}</span>
-            </div>
-          )}
-
-          <Button
-            variant="primary"
-            type="submit"
-            loading={loading}
-            icon={ArrowRight}
-            iconPosition="right"
-            style={{ width: '100%', padding: '12px', marginTop: '8px', fontSize: '14px', fontWeight: '800' }}
+        <div className="flex flex-wrap gap-2">
+          <button
+            type="button"
+            onClick={() => handleFillDemo('tuan.hm@skillhub.vn', 'PASS-8001')}
+            className="text-xs px-2.5 py-1 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:border-emerald-500 hover:text-emerald-700 dark:hover:text-emerald-400 font-medium transition-colors"
           >
-            Vào phòng thi ngay
-          </Button>
-        </form>
-
-        {/* Footer info */}
-        <div style={{ textAlign: 'center', borderTop: '1px solid var(--line-subtle)', paddingTop: '16px', marginTop: '24px', fontSize: '12px', color: 'var(--navy-muted)' }}>
-          Hệ thống giám sát thi tự động · Yêu cầu camera & kết nối mạng ổn định
+            Kỹ sư Hoàng Minh Tuấn (Senior MES)
+          </button>
+          <button
+            type="button"
+            onClick={() => handleFillDemo('quan.tm@skillhub.vn', 'PASS-8891')}
+            className="text-xs px-2.5 py-1 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:border-emerald-500 hover:text-emerald-700 dark:hover:text-emerald-400 font-medium transition-colors"
+          >
+            Kỹ sư Trần Minh Quân (Lead MES)
+          </button>
         </div>
-      </Card>
+      </div>
+
+      {/* Login Form - Comfortable Form Density (40px input, 14px text) */}
+      <form onSubmit={handleLoginExam} className="space-y-4">
+        <div>
+          <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1.5">
+            Số Báo Danh (SBD) hoặc Email thí sinh:
+          </label>
+          <input
+            type="text"
+            required
+            value={sbd}
+            onChange={(e) => setSbd(e.target.value)}
+            placeholder="VD: SBD-MES-202601 hoặc email@goldsun.vn"
+            className="w-full h-10 px-3 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition-colors"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1.5">
+            Mã bảo mật phòng thi (Passcode):
+          </label>
+          <input
+            type="password"
+            required
+            value={passcode}
+            onChange={(e) => setPasscode(e.target.value)}
+            placeholder="VD: PASS-8001"
+            className="w-full h-10 px-3 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition-colors font-mono"
+          />
+        </div>
+
+        {errorMsg && (
+          <div className="p-2.5 rounded-md bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300 text-xs flex items-center gap-2">
+            <ShieldAlert size={15} className="shrink-0" />
+            <span>{errorMsg}</span>
+          </div>
+        )}
+
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full h-10 mt-2 px-4 rounded-md bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white text-sm font-semibold flex items-center justify-center gap-2 transition-colors shadow-xs focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900 disabled:opacity-60"
+        >
+          {loading ? (
+            <span>Đang xác thực phòng thi...</span>
+          ) : (
+            <>
+              <span>Vào phòng thi ngay</span>
+              <ArrowRight size={16} />
+            </>
+          )}
+        </button>
+      </form>
+
+      {/* Footer info */}
+      <div className="text-center border-t border-slate-200 dark:border-slate-800 pt-4 mt-6 text-xs text-slate-500 dark:text-slate-400">
+        Hệ thống giám sát tự động snapshot bài thi · Yêu cầu kết nối mạng ổn định
+      </div>
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   X,
   Sun,
@@ -7,6 +7,7 @@ import {
   Bell,
   CircleHelp,
   CheckCheck,
+  LogOut,
 } from 'lucide-react';
 import { navigation } from '../../app/navigation';
 import { useAuth } from '../../shared/hooks/useAuth';
@@ -15,11 +16,28 @@ import { mockApi } from '../../mocks/mockService';
 
 export default function Sidebar({ open, onClose, onOpenHelp }) {
   const location = useLocation();
-  const { currentUser, switchRole } = useAuth();
+  const navigate = useNavigate();
+  const { currentUser, switchRole, logout } = useAuth();
 
   // Popover state: null | 'notifications' | 'profile'
   const [popover, setPopover] = useState(null);
   const [notifications, setNotifications] = useState([]);
+
+  // Floating tooltip for desktop collapsed rail
+  const [hoveredTooltip, setHoveredTooltip] = useState(null);
+
+  const showTooltip = (label, e) => {
+    if (window.innerWidth <= 768) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    setHoveredTooltip({
+      label,
+      top: rect.top + rect.height / 2,
+    });
+  };
+
+  const hideTooltip = () => {
+    setHoveredTooltip(null);
+  };
 
   // Theme toggle state (syncs with localStorage & class dark on html)
   const [theme, setTheme] = useState(() => {
@@ -76,11 +94,22 @@ export default function Sidebar({ open, onClose, onOpenHelp }) {
         />
       )}
 
-      <aside className={`sidebar ${open ? 'open' : ''}`}>
+      <aside className={`sidebar ${open ? 'open' : ''}`} onMouseLeave={hideTooltip}>
         {/* Brand / Logo */}
-        <Link to="/app" className="brand" aria-label="SkillHub - Trang chủ" onClick={onClose} title="SkillHub - Trang chủ">
-          <span className="brand-mark" aria-hidden="true">S</span>
-          <span className="mobile-wordmark font-bold tracking-wider" style={{ marginLeft: '10px', color: '#ffffff' }}>SkillHub</span>
+        <Link
+          to="/app"
+          className="brand"
+          aria-label="Đánh giá năng lực MES - Trang chủ"
+          onClick={() => { hideTooltip(); onClose?.(); }}
+          onMouseEnter={(e) => showTooltip('Đánh giá năng lực MES - Trang chủ', e)}
+          onMouseLeave={hideTooltip}
+        >
+          <img
+            src="/assets/goldsun/goldsun-icon.png"
+            alt="Goldsun"
+            className="w-7 h-7 object-contain rounded"
+          />
+          <span className="mobile-wordmark font-bold tracking-wider" style={{ marginLeft: '10px', color: '#ffffff' }}>MES Goldsun</span>
         </Link>
 
         <button className="mobile-close icon-button" onClick={onClose} aria-label="Đóng menu">
@@ -97,19 +126,20 @@ export default function Sidebar({ open, onClose, onOpenHelp }) {
                 key={item.id}
                 to={item.path}
                 className={`nav-item ${isActive ? 'active' : ''}`}
-                title={item.label}
                 aria-label={item.label}
                 aria-current={isActive ? 'page' : undefined}
-                onClick={onClose}
+                onClick={() => { hideTooltip(); onClose?.(); }}
+                onMouseEnter={(e) => showTooltip(item.label, e)}
+                onMouseLeave={hideTooltip}
               >
-                <Icon size={17} strokeWidth={isActive ? 2.2 : 1.7} />
+                <Icon size={15} strokeWidth={isActive ? 2 : 1.6} />
                 <span className="nav-label">{item.label}</span>
               </Link>
             );
           })}
         </nav>
 
-        {/* Bottom Utility Controls (Moved from Topbar Header) */}
+        {/* Bottom Utility Controls (Integrated Header utilities) */}
         <div className="sidebar-bottom-controls">
           {/* Settings link if present */}
           {bottomItems.map((item) => {
@@ -120,11 +150,12 @@ export default function Sidebar({ open, onClose, onOpenHelp }) {
                 key={item.id}
                 to={item.path}
                 className={`sidebar-util-btn ${isActive ? 'active' : ''}`}
-                title={item.label}
                 aria-label={item.label}
-                onClick={onClose}
+                onClick={() => { hideTooltip(); onClose?.(); }}
+                onMouseEnter={(e) => showTooltip(item.label, e)}
+                onMouseLeave={hideTooltip}
               >
-                <Icon size={16} strokeWidth={isActive ? 2.2 : 1.7} />
+                <Icon size={15} strokeWidth={isActive ? 2 : 1.6} />
                 <span className="mobile-only-label">{item.label}</span>
               </Link>
             );
@@ -135,12 +166,13 @@ export default function Sidebar({ open, onClose, onOpenHelp }) {
             className="sidebar-util-btn"
             onClick={toggleTheme}
             aria-label={theme === 'dark' ? 'Chuyển sang nền Sáng' : 'Chuyển sang nền Tối'}
-            title={theme === 'dark' ? 'Giao diện Tối (Bấm để đổi sang Sáng)' : 'Giao diện Sáng (Bấm để đổi sang Tối)'}
+            onMouseEnter={(e) => showTooltip(theme === 'dark' ? 'Chuyển sang nền Sáng' : 'Chuyển sang nền Tối', e)}
+            onMouseLeave={hideTooltip}
           >
             {theme === 'dark' ? (
-              <Sun size={16} className="text-amber-400" />
+              <Sun size={15} className="text-amber-400" />
             ) : (
-              <Moon size={16} className="text-white/80" />
+              <Moon size={15} className="text-white/80" />
             )}
             <span className="mobile-only-label">
               {theme === 'dark' ? 'Giao diện Sáng' : 'Giao diện Tối'}
@@ -151,12 +183,13 @@ export default function Sidebar({ open, onClose, onOpenHelp }) {
           <button
             className={`sidebar-util-btn relative ${popover === 'notifications' ? 'active' : ''}`}
             aria-label="Thông báo"
-            title="Thông báo hệ thống"
-            onClick={() => setPopover(popover === 'notifications' ? null : 'notifications')}
+            onClick={() => { hideTooltip(); setPopover(popover === 'notifications' ? null : 'notifications'); }}
+            onMouseEnter={(e) => showTooltip('Thông báo hệ thống', e)}
+            onMouseLeave={hideTooltip}
           >
-            <Bell size={16} strokeWidth={1.8} />
+            <Bell size={15} strokeWidth={1.6} />
             {unreadCount > 0 && (
-              <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-red-500 border border-[#025c27]" />
+              <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-red-500 border border-[#025c27]" />
             )}
             <span className="mobile-only-label">
               Thông báo {unreadCount > 0 ? `(${unreadCount})` : ''}
@@ -168,13 +201,15 @@ export default function Sidebar({ open, onClose, onOpenHelp }) {
             <button
               className="sidebar-util-btn"
               onClick={() => {
+                hideTooltip();
                 onOpenHelp();
                 onClose?.();
               }}
               aria-label="Trợ giúp"
-              title="Trợ giúp & Hướng dẫn"
+              onMouseEnter={(e) => showTooltip('Trợ giúp & Hướng dẫn', e)}
+              onMouseLeave={hideTooltip}
             >
-              <CircleHelp size={16} strokeWidth={1.8} />
+              <CircleHelp size={15} strokeWidth={1.6} />
               <span className="mobile-only-label">Trợ giúp</span>
             </button>
           )}
@@ -182,15 +217,27 @@ export default function Sidebar({ open, onClose, onOpenHelp }) {
           {/* User Profile Avatar & Role Switcher */}
           <div className="relative mt-1">
             <button
-              className={`sidebar-avatar-btn ${popover === 'profile' ? 'ring-2 ring-white' : ''}`}
+              className={`sidebar-avatar-btn ${popover === 'profile' ? 'active-avatar' : ''}`}
               aria-label="Tài khoản & Vai trò"
-              title={`${currentUser?.name || 'Tài khoản'} (${currentUser?.roleName || ''})`}
-              onClick={() => setPopover(popover === 'profile' ? null : 'profile')}
+              onClick={() => { hideTooltip(); setPopover(popover === 'profile' ? null : 'profile'); }}
+              onMouseEnter={(e) => showTooltip(`${currentUser?.name || 'Tài khoản'} (${currentUser?.roleName || 'Vai trò'})`, e)}
+              onMouseLeave={hideTooltip}
             >
               <span className="avatar-circle">{currentUser?.avatar || 'U'}</span>
             </button>
           </div>
         </div>
+
+        {/* Global Floating Tooltip for Desktop Rail */}
+        {hoveredTooltip && !popover && (
+          <div
+            className="sidebar-floating-tooltip"
+            style={{ top: `${hoveredTooltip.top}px` }}
+            role="tooltip"
+          >
+            {hoveredTooltip.label}
+          </div>
+        )}
 
         {/* Notifications Popover (Floats to the right of sidebar) */}
         {popover === 'notifications' && (
@@ -315,6 +362,19 @@ export default function Sidebar({ open, onClose, onOpenHelp }) {
                 setPopover(null);
               }}
             />
+
+            <button
+              type="button"
+              onClick={() => {
+                setPopover(null);
+                logout();
+                navigate('/login');
+              }}
+              className="w-full mt-3 pt-2.5 border-t border-slate-100 dark:border-slate-800 flex items-center justify-center gap-2 text-xs font-semibold text-red-600 dark:text-red-400 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950/30 p-2 rounded-lg transition-colors cursor-pointer"
+            >
+              <LogOut size={14} />
+              <span>Đăng xuất hệ thống</span>
+            </button>
           </div>
         )}
       </aside>

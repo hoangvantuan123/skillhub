@@ -13,12 +13,12 @@ export default function Card({
     <div
       onClick={onClick}
       style={{
-        background: '#ffffff',
+        background: 'var(--surface-card)',
         border: '1px solid var(--line)',
-        borderRadius: '12px',
-        boxShadow: 'var(--shadow-xs)',
+        borderRadius: '6px',
+        boxShadow: 'none',
         padding,
-        transition: hoverable ? 'transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease' : 'none',
+        transition: hoverable ? 'border-color 0.18s ease' : 'none',
         cursor: onClick || hoverable ? 'pointer' : 'default',
         position: 'relative',
         ...style,

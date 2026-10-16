@@ -1,13 +1,13 @@
+import ManagementFrame from '../../../shared/ui/ManagementFrame';
 import React, { useState, useEffect } from 'react';
-import PageHeader from '../../../shared/components/PageHeader';
 import SearchFilter from '../../../shared/components/SearchFilter';
 import Card from '../../../shared/ui/Card';
 import Badge from '../../../shared/ui/Badge';
-import Button from '../../../shared/ui/Button';
+
 import Tabs from '../../../shared/ui/Tabs';
 import { mockApi } from '../../../mocks/mockService';
 import { useToast } from '../../../shared/hooks/useToast';
-import { Bookmark, BookmarkCheck, Clock, BookOpen, Search, ArrowRight } from 'lucide-react';
+import { Bookmark, BookmarkCheck } from 'lucide-react';
 
 export default function KnowledgePage() {
   const { addToast } = useToast();
@@ -41,21 +41,17 @@ export default function KnowledgePage() {
   ];
 
   return (
-    <div>
-      <PageHeader
-        title="Kho tài liệu & Tra cứu kiến thức"
-        subtitle="Tra cứu các học liệu, chuẩn kiến thức và tài liệu hướng dẫn kỹ thuật đã xuất bản."
-      />
-
-      <Tabs tabs={tabs} activeTab={activeTab} onChange={setActiveTab} />
-
-      <SearchFilter
+    <ManagementFrame className="management-screen"
+header={<><div className="management-tabs"><Tabs tabs={tabs} activeTab={activeTab} onChange={setActiveTab} />{null}</div><div className="management-actions">{null}{null}</div></>}
+filters={<SearchFilter
         searchValue={search}
         onSearchChange={setSearch}
         placeholder="Tra cứu bài viết theo tiêu đề, từ khóa, tag..."
-      />
-
-      <div style={{ display: 'grid', gridTemplateColumns: selectedArticle ? '1fr 1fr' : '1fr', gap: '20px' }}>
+      />}
+status={<><strong>{"Kho tài liệu & Tra cứu kiến thức"}</strong></>}
+>
+<div className="management-body-scroll">
+<div style={{ display: 'grid', gridTemplateColumns: selectedArticle ? '1fr 1fr' : '1fr', gap: '20px' }}>
         {/* Article Cards Grid */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
           {filtered.length === 0 ? (
@@ -139,6 +135,8 @@ export default function KnowledgePage() {
           </Card>
         )}
       </div>
-    </div>
+</div>
+
+</ManagementFrame>
   );
 }

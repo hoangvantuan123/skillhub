@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, Bell, CircleHelp, X, CheckCheck, Sun, Moon } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Menu, Bell, CircleHelp, X, CheckCheck, Sun, Moon, LogOut } from 'lucide-react';
 import { useAuth } from '../../shared/hooks/useAuth';
 import RoleSwitcher from '../../shared/components/RoleSwitcher';
 import { mockApi } from '../../mocks/mockService';
 import { formatDate } from '../../shared/lib/formatters';
 
 export default function Topbar({ onOpenMenu, onOpenHelp }) {
-  const { currentUser, switchRole } = useAuth();
+  const navigate = useNavigate();
+  const { currentUser, switchRole, logout } = useAuth();
   const [popover, setPopover] = useState(null); // 'notifications' | 'profile' | null
   const [notifications, setNotifications] = useState([]);
   const [theme, setTheme] = useState(() => {
@@ -47,7 +49,7 @@ export default function Topbar({ onOpenMenu, onOpenHelp }) {
         >
           <Menu size={22} />
         </button>
-        <span className="mobile-wordmark">SkillHub</span>
+        <span className="mobile-wordmark">Đánh giá năng lực MES</span>
       </div>
 
       <div className="topbar-right">
@@ -176,6 +178,35 @@ export default function Topbar({ onOpenMenu, onOpenHelp }) {
                   setPopover(null);
                 }}
               />
+
+              <button
+                type="button"
+                onClick={() => {
+                  setPopover(null);
+                  logout();
+                  navigate('/login');
+                }}
+                style={{
+                  width: '100%',
+                  marginTop: '12px',
+                  paddingTop: '10px',
+                  borderTop: '1px solid var(--line-subtle)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px',
+                  fontSize: '12px',
+                  fontWeight: '600',
+                  color: '#dc2626',
+                  cursor: 'pointer',
+                  padding: '8px',
+                  borderRadius: '6px',
+                  background: 'transparent',
+                }}
+              >
+                <LogOut size={14} />
+                <span>Đăng xuất hệ thống</span>
+              </button>
             </div>
           )}
         </div>

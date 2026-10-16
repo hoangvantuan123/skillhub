@@ -1,46 +1,12 @@
 import React from 'react';
-import { Search } from 'lucide-react';
-import Input from '../ui/Input';
+import SearchInput from '../ui/SearchInput';
 
-export default function SearchFilter({
-  searchValue,
-  onSearchChange,
-  placeholder = 'Tìm kiếm...',
-  filters = null,
-  actions = null,
-}) {
-  return (
-    <div
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        flexWrap: 'wrap',
-        gap: '12px',
-        background: '#ffffff',
-        padding: '14px 18px',
-        borderRadius: '12px',
-        border: '1px solid var(--line)',
-        marginBottom: '20px',
-      }}
-    >
-      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flex: 1, minWidth: '260px' }}>
-        <div style={{ width: '100%', maxWidth: '380px' }}>
-          <Input
-            icon={Search}
-            placeholder={placeholder}
-            value={searchValue}
-            onChange={(e) => onSearchChange(e.target.value)}
-          />
-        </div>
-        {filters}
-      </div>
-
-      {actions && (
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          {actions}
-        </div>
-      )}
+export default function SearchFilter({ searchValue, onSearchChange, placeholder = 'Tìm kiếm…', filters = null, actions = null }) {
+  return <div className="flex w-full flex-wrap items-center justify-between gap-2">
+    <div className="flex flex-1 flex-wrap items-center gap-2 min-w-0">
+      <div className="w-full sm:w-72"><SearchInput size="sm" placeholder={placeholder} value={searchValue} onChange={event => onSearchChange(event.target.value)} onClear={() => onSearchChange('')} /></div>
+      {filters}
     </div>
-  );
+    {actions && <div className="management-actions">{actions}</div>}
+  </div>;
 }

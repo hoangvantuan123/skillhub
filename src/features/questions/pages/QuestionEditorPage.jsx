@@ -1,19 +1,21 @@
+import ManagementFrame from '../../../shared/ui/ManagementFrame';
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import PageHeader from '../../../shared/components/PageHeader';
+import useAttributeCatalog from '../../../shared/hooks/useAttributeCatalog';
 import Card from '../../../shared/ui/Card';
-import Input from '../../../shared/ui/Input';
+
 import Button from '../../../shared/ui/Button';
 import Badge from '../../../shared/ui/Badge';
 import { mockSubjects, mockTopics, mockGroups } from '../../../mocks/mockData';
 import { mockApi } from '../../../mocks/mockService';
 import { useToast } from '../../../shared/hooks/useToast';
 import { useAuth } from '../../../shared/hooks/useAuth';
-import { ArrowLeft, Plus, Trash2, CheckCircle2, Users } from 'lucide-react';
+import { ArrowLeft, Plus, Trash2, CheckCircle2 } from 'lucide-react';
 import InteractiveHmiSimulation from '../components/InteractiveHmiSimulation';
 
 export default function QuestionEditorPage() {
   const navigate = useNavigate();
+  const levelCatalog = useAttributeCatalog('level');
   const { id } = useParams();
   const { addToast } = useToast();
   const { currentUser } = useAuth();
@@ -57,6 +59,10 @@ export default function QuestionEditorPage() {
   };
 
   const handleSave = async (status = 'draft') => {
+    if (levelCatalog.loading || levelCatalog.error || !levelCatalog.options.some(option => option.value === level && option.active && option.value !== 'All')) {
+      addToast('Vui lòng chọn cấp độ đang sử dụng trong danh mục.', 'warning');
+      return;
+    }
     if (!content.trim()) {
       addToast('Vui lòng nhập nội dung câu hỏi!', 'warning');
       return;
@@ -78,7 +84,7 @@ export default function QuestionEditorPage() {
       targetGroup,
       targetGroupName: grp ? grp.name : 'Tất cả nhóm học viên',
       level,
-      levelName: `Level ${level.substring(1)}`,
+      levelName: levelCatalog.labelFor(level),
       format,
       simulationType: format === 'simulation_hmi' ? simulationType : undefined,
       isCritical,
@@ -105,33 +111,27 @@ export default function QuestionEditorPage() {
   };
 
   return (
-    <div style={{ maxWidth: '1080px', margin: '0 auto' }}>
-      <PageHeader
-        title={id ? 'Tạo phiên bản mới cho câu hỏi' : 'Soạn câu hỏi mới'}
-        subtitle="Phiên bản đã xuất bản là bất biến. Khi chỉnh sửa, hệ thống sẽ tự động tạo một phiên bản ghi mới."
-        backAction={
-          <Button variant="ghost" size="sm" icon={ArrowLeft} onClick={() => navigate('/manage/questions')}>
+    <ManagementFrame className="management-screen"
+header={<><div className="management-tabs"><span className="management-tab-active">Thiết lập</span>{null}</div><div className="management-actions">{<Button variant="ghost" size="sm" icon={ArrowLeft} onClick={() => navigate('/manage/questions')}>
             Quay lại danh sách
-          </Button>
-        }
-      />
+          </Button>}{null}</div></>}
 
-      <Card style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+status={<><strong>{id ? 'Tạo phiên bản mới cho câu hỏi' : 'Soạn câu hỏi mới'}</strong></>}
+>
+<div className="management-body-scroll">
+<Card style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
         {/* Classification row */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '14px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 180px), 1fr))', gap: '14px' }}>
           <div>
             <label style={{ fontSize: '13px', fontWeight: '600', display: 'block', marginBottom: '6px' }}>
-              Cấp độ ISA-95 (Level)
+              {levelCatalog.label || 'Cấp độ'}
             </label>
             <select
               value={level}
               onChange={(e) => setLevel(e.target.value)}
               style={{ width: '100%', padding: '9px 12px', borderRadius: '8px', border: '1px solid var(--line)', fontSize: '13px', fontWeight: '700' }}
             >
-              <option value="L0">Level 0 — Quá trình vật lý & Cảm biến</option>
-              <option value="L1">Level 1 — Điều khiển chấp hành & PLC</option>
-              <option value="L2">Level 2 — Giám sát SCADA & Màn hình HMI</option>
-              <option value="L3">Level 3 — Điều hành sản xuất MES & MOM</option>
+              {levelCatalog.optionsFor(level, { includeAll: false }).map(option => <option key={option.value} value={option.value} disabled={option.disabled}>{option.label}</option>)}
             </select>
           </div>
 
@@ -306,7 +306,7 @@ export default function QuestionEditorPage() {
                     border: '1px solid #86efac',
                     fontSize: '12px',
                     fontWeight: '700',
-                    background: '#ffffff',
+                    background: 'var(--surface-card)',
                     color: '#166534',
                   }}
                 >
@@ -317,7 +317,7 @@ export default function QuestionEditorPage() {
             </div>
 
             {/* Live Interactive Sandbox Preview */}
-            <div style={{ background: '#ffffff', borderRadius: '8px', border: '1px solid #bbf7d0', padding: '16px' }}>
+            <div style={{ background: 'var(--surface-card)', borderRadius: '8px', border: '1px solid #bbf7d0', padding: '16px' }}>
               <div style={{ fontSize: '11px', fontWeight: '800', color: '#166534', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '10px' }}>
                 Xem trước tương tác (Interactive Preview dành cho người biên soạn)
               </div>
@@ -413,7 +413,7 @@ export default function QuestionEditorPage() {
                     display: 'flex',
                     alignItems: 'center',
                     gap: '10px',
-                    background: '#ffffff',
+                    background: 'var(--surface-card)',
                     padding: '10px',
                     borderRadius: '8px',
                     border: '1px solid var(--line)',
@@ -493,6 +493,8 @@ export default function QuestionEditorPage() {
           </Button>
         </div>
       </Card>
-    </div>
+</div>
+
+</ManagementFrame>
   );
 }

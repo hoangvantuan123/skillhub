@@ -30,7 +30,7 @@ export default function Input({
           display: 'flex',
           alignItems: 'center',
           gap: '10px',
-          background: '#ffffff',
+          background: 'var(--surface-card)',
           border: `1px solid ${error ? '#ef4444' : 'var(--line)'}`,
           borderRadius: '8px',
           padding: '0 12px',
