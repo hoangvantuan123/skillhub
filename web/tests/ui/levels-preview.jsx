@@ -1,0 +1,10 @@
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import { AuthContext } from '../../src/app/providers';
+import LevelPolicyPage from '../../src/features/examinations/pages/LevelPolicyPage';
+import '../../src/shared/styles/tokens.css';
+import '../../src/shared/styles/global.css';
+import '../../src/shared/styles/layout.css';
+let policy={lower_failure:'preserve',levels:['L0','L1','L2','L3'].map((code,i)=>({code,label:['Nền tảng','Thực hành','Nâng cao','Chuyên gia'][i],pass_percent:75,max_attempts:0,cooldown_hours:0}))};let version=1;
+const service={get:async()=>({policy:structuredClone(policy),version}),save:async next=>{policy=structuredClone(next);return {version:++version}},simulate:async(p,attempts)=>{let highest=-1;return {simulation_only:true,outcomes:attempts.map(a=>{const index=p.levels.findIndex(l=>l.code===a.level);const percent=a.score/a.max_score*100;const eligible=index<=highest+1;const passed=eligible&&percent>=p.levels[index].pass_percent&&a.critical_failed===0;if(passed)highest=Math.max(highest,index);return {level:a.level,percent,eligible,passed,reason:passed?'Đạt điểm và điều kiện cấp':'Chưa đạt ngưỡng điểm',highest_earned:highest>=0?p.levels[highest].code:'',current_level:highest>=0?p.levels[highest].code:'',suspended:false}})}}};
+createRoot(document.getElementById('root')).render(<AuthContext.Provider value={{hasPermission:()=>true}}><div style={{height:'100dvh',display:'flex',flexDirection:'column'}}><p className="px-4 py-2 bg-amber-50 text-xs text-amber-800">Kiểm thử component · Dữ liệu giả lập, không kết nối DB</p><LevelPolicyPage service={service}/></div></AuthContext.Provider>);

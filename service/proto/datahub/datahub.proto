@@ -1,0 +1,72 @@
+syntax = "proto3";
+
+package datahub;
+
+option go_package = "service-datahub/pb/datahub";
+
+import "auth.proto";
+import "config.proto";
+import "work_process.proto";
+import "proxy.proto";
+import "audit.proto";
+import "health.proto";
+import "plan_report.proto";
+
+// ==========================================
+// DataHub Master gRPC Service Definition
+// ==========================================
+
+service DataHubService {
+  // 1. Authentication & Session Management
+  rpc Login (LoginProtoRequest) returns (LoginProtoResponse);
+  rpc GetSession (SessionProtoRequest) returns (SessionProtoResponse);
+
+  // 2. Dynamic ERP Configurations Management
+  rpc GetAllConfigs (GetConfigsProtoRequest) returns (GetConfigsProtoResponse);
+  rpc SaveConfig (SaveConfigProtoRequest) returns (SaveConfigProtoResponse);
+  rpc DeleteConfig (DeleteConfigProtoRequest) returns (DeleteConfigProtoResponse);
+
+  // 3. Ultra Fast Proxy & Bidirectional Streaming
+  rpc ProxyForward (ProxyProtoRequest) returns (ProxyProtoResponse);
+  rpc StreamProxy (stream ProxyProtoRequest) returns (stream ProxyProtoResponse);
+
+  // 4. Production & Work Process (Lệnh Công Đoạn & Nhà máy)
+  rpc QueryWorkProcess (WorkProcessProtoRequest) returns (WorkProcessProtoResponse);
+  rpc GetFactories (FactoryProtoRequest) returns (FactoryProtoResponse);
+
+  // 5. Dynamic Endpoints Routing in DB
+  rpc GetAllEndpoints (GetEndpointsProtoRequest) returns (GetEndpointsProtoResponse);
+  rpc SaveEndpoint (SaveEndpointProtoRequest) returns (SaveEndpointProtoResponse);
+
+  // 6. Production Plan & Stats Reports (KHSX & TKSX Master & Detail)
+  rpc QueryPlanMaster (PlanMasterProtoRequest) returns (PlanMasterProtoResponse);
+  rpc DeletePlanMaster (DeletePlanMasterProtoRequest) returns (DeletePlanMasterProtoResponse);
+  rpc SavePlanRegistration (PlanRegistrationSaveProtoRequest) returns (PlanRegistrationSaveProtoResponse);
+
+  rpc QueryPlanDetail (PlanDetailProtoRequest) returns (PlanDetailProtoResponse);
+  rpc AddPlanDetail (AddPlanDetailProtoRequest) returns (AddPlanDetailProtoResponse);
+  rpc UpdatePlanDetail (UpdatePlanDetailProtoRequest) returns (UpdatePlanDetailProtoResponse);
+  rpc DeletePlanDetail (DeletePlanDetailProtoRequest) returns (DeletePlanDetailProtoResponse);
+
+  rpc QueryProdStatsDetail (ProdStatsDetailProtoRequest) returns (ProdStatsDetailProtoResponse);
+  rpc AddProdStatsDetail (AddProdStatsDetailProtoRequest) returns (AddProdStatsDetailProtoResponse);
+  rpc UpdateProdStatsDetail (UpdateProdStatsDetailProtoRequest) returns (UpdateProdStatsDetailProtoResponse);
+  rpc DeleteProdStatsDetail (DeleteProdStatsDetailProtoRequest) returns (DeleteProdStatsDetailProtoResponse);
+
+  rpc GetProductionPlanReport (PlanReportProtoRequest) returns (PlanReportProtoResponse);
+  rpc GetProductionStatisticsReport (ProdStatsReportProtoRequest) returns (ProdStatsReportProtoResponse);
+
+  // 7. Audit Logs & System Health
+  rpc GetAuditLogs (AuditLogsProtoRequest) returns (AuditLogsProtoResponse);
+  rpc HealthCheck (HealthProtoRequest) returns (HealthProtoResponse);
+
+  // 8. Dynamic CodeHelp & Lookups
+  rpc QueryCodeHelp (CodeHelpProtoRequest) returns (CodeHelpProtoResponse);
+
+  // 9. Production Calculation Compressed Bundles (.gsprod packages)
+  rpc PublishProductionBundle (PublishProductionBundleProtoRequest) returns (PublishProductionBundleProtoResponse);
+  rpc QueryProductionBundles (QueryProductionBundlesProtoRequest) returns (QueryProductionBundlesProtoResponse);
+  rpc GetProductionBundleData (GetProductionBundleDataProtoRequest) returns (GetProductionBundleDataProtoResponse);
+  rpc DeleteProductionBundle (DeleteProductionBundleProtoRequest) returns (DeleteProductionBundleProtoResponse);
+  rpc CancelProductionBundle (CancelProductionBundleProtoRequest) returns (CancelProductionBundleProtoResponse);
+}

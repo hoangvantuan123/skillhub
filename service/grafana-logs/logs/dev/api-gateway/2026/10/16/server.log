@@ -1,0 +1,12 @@
+{"level":"info","time":"2026-10-16T23:52:10.822+0700","msg":" API Gateway Worker pool started","workers":100}
+{"level":"info","time":"2026-10-16T23:52:10.824+0700","msg":"gRPC connection established","host":"127.0.0.1:60051","conn_index":1}
+{"level":"info","time":"2026-10-16T23:52:10.824+0700","msg":"gRPC connection established","host":"127.0.0.1:60051","conn_index":2}
+{"level":"info","time":"2026-10-16T23:52:10.824+0700","msg":"gRPC connection established","host":"127.0.0.1:60051","conn_index":3}
+{"level":"info","time":"2026-10-16T23:52:10.824+0700","msg":"gRPC connection established","host":"127.0.0.1:60051","conn_index":4}
+{"level":"info","time":"2026-10-16T23:52:10.824+0700","msg":"gRPC connection established","host":"127.0.0.1:60051","conn_index":5}
+{"level":"info","time":"2026-10-16T23:52:10.825+0700","msg":"gRPC connection established","host":"127.0.0.1:60052","conn_index":1}
+{"level":"info","time":"2026-10-16T23:52:10.825+0700","msg":"gRPC connection established","host":"127.0.0.1:60052","conn_index":2}
+{"level":"info","time":"2026-10-16T23:52:10.825+0700","msg":"gRPC connection established","host":"127.0.0.1:60052","conn_index":3}
+{"level":"info","time":"2026-10-16T23:52:10.825+0700","msg":"gRPC connection established","host":"127.0.0.1:60052","conn_index":4}
+{"level":"info","time":"2026-10-16T23:52:10.825+0700","msg":"gRPC connection established","host":"127.0.0.1:60052","conn_index":5}
+{"level":"info","time":"2026-10-16T23:52:10.825+0700","msg":" API Gateway (Go) starting","addr":":9643","prefix":"/api"}

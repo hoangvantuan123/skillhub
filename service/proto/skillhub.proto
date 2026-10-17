@@ -1,0 +1,10 @@
+syntax = "proto3";
+package skillhub;
+import "google/protobuf/struct.proto";
+option go_package = "server-core/internal/skillauth";
+// Fields: action, username, email (legacy alias), password, name, token, ip, user_agent, remember, payload.
+// Module actions: modules, module_create, module_update, module_delete, module_import, module_export, grants, grant_save.
+// Module/grant request bodies are in payload. Session and permissions are always checked server-side.
+// Reply: access_token, refresh_token (gateway strips), user, history, modules, users, ok.
+service Auth { rpc Execute(google.protobuf.Struct) returns (google.protobuf.Struct); }
+

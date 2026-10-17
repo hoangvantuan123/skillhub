@@ -1,0 +1,9 @@
+{"level":"INFO","ts":"2026-10-08T19:38:33.318+0700","caller":"server/main.go:62","msg":"Starting User Microservice (Go)"}
+{"level":"INFO","ts":"2026-10-08T19:38:33.358+0700","caller":"database/db.go:64","msg":"Auto-detected PostgreSQL max_connections setting","server_max_connections":100,"auto_pool_max_conns":35,"auto_pool_min_conns":8}
+{"level":"INFO","ts":"2026-10-08T19:38:33.358+0700","caller":"database/db.go:78","msg":"Successfully connected to Primary Database (GORM & SQLX Auto-Tuned)","max_conns":35,"min_conns":8}
+{"level":"INFO","ts":"2026-10-08T19:38:33.396+0700","caller":"database/db.go:104","msg":"Successfully connected to Logs Database (GORM & SQLX Auto-Tuned)"}
+{"level":"INFO","ts":"2026-10-08T19:38:33.399+0700","caller":"database/db.go:215","msg":"Verified Log & Audit Database tables (_ERPLoginFullLogs, _SysFullAuditLog)"}
+{"level":"INFO","ts":"2026-10-08T19:38:33.552+0700","caller":"database/pgx.go:60","msg":"Successfully connected to Database via PGXPOOL (High Performance Mode)"}
+{"level":"INFO","ts":"2026-10-08T19:38:33.553+0700","caller":"worker/pool.go:38","msg":"Worker pool started","workers":200}
+{"level":"INFO","ts":"2026-10-08T19:38:33.554+0700","caller":"system/audit_log_service.go:78","msg":"[AUDIT LOG ENGINE] High-Concurrency Multi-Tier Kafka Engine active","kafka_brokers":"localhost:9092","topic_api":"erp.audit.api","topic_data":"erp.audit.datachange","api_channel_cap":50000,"data_channel_cap":50000,"log_db_target":"ERPSYSLOG (PostgreSQL)"}
+{"level":"FATAL","ts":"2026-10-08T19:38:33.556+0700","caller":"server/main.go:94","msg":"Failed to listen","error":"listen tcp :5051: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted.","stacktrace":"main.main\n\tC:/Users/tuanhoang/Desktop/Gshub/service/server-core/cmd/server/main.go:94\nruntime.main\n\tC:/Program Files/Go/src/runtime/proc.go:285"}

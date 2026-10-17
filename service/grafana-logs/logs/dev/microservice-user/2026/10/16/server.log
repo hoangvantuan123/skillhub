@@ -1,0 +1,130 @@
+{"level":"INFO","ts":"2026-10-16T23:43:23.333+0700","caller":"server/main.go:62","msg":"Starting User Microservice (Go)"}
+{"level":"INFO","ts":"2026-10-16T23:43:23.389+0700","caller":"database/db.go:65","msg":"Auto-detected PostgreSQL max_connections setting","server_max_connections":100,"auto_pool_max_conns":35,"auto_pool_min_conns":8}
+{"level":"INFO","ts":"2026-10-16T23:43:23.389+0700","caller":"database/db.go:79","msg":"Successfully connected to Primary Database (GORM & SQLX Auto-Tuned)","max_conns":35,"min_conns":8}
+{"level":"INFO","ts":"2026-10-16T23:43:23.421+0700","caller":"database/db.go:105","msg":"Successfully connected to Logs Database (GORM & SQLX Auto-Tuned)"}
+{"level":"INFO","ts":"2026-10-16T23:43:23.426+0700","caller":"database/db.go:451","msg":"Verified Log & Audit Database tables (_ERPLoginFullLogs, _SysFullAuditLog)"}
+{"level":"INFO","ts":"2026-10-16T23:43:23.436+0700","caller":"database/db.go:352","msg":"Verified ERP Database tables (_ERPLanguage, _ERPDictionary, _ERPTblGrp, _ERPPermActions, _ERPSysAttrGroups, etc.)"}
+{"level":"INFO","ts":"2026-10-16T23:43:23.437+0700","caller":"database/db.go:123","msg":"Verified permission UserSeq columns"}
+{"level":"INFO","ts":"2026-10-16T23:43:23.440+0700","caller":"database/db.go:127","msg":"Verified extended permission schema"}
+{"level":"INFO","ts":"2026-10-16T23:43:23.588+0700","caller":"database/pgx.go:60","msg":"Successfully connected to Database via PGXPOOL (High Performance Mode)"}
+{"level":"INFO","ts":"2026-10-16T23:43:23.589+0700","caller":"worker/pool.go:38","msg":"Worker pool started","workers":200}
+{"level":"INFO","ts":"2026-10-16T23:43:23.589+0700","caller":"system/audit_log_service.go:78","msg":"[AUDIT LOG ENGINE] High-Concurrency Multi-Tier Kafka Engine active","kafka_brokers":"localhost:9092","topic_api":"erp.audit.api","topic_data":"erp.audit.datachange","api_channel_cap":50000,"data_channel_cap":50000,"log_db_target":"ERPSYSLOG (PostgreSQL)"}
+{"level":"INFO","ts":"2026-10-16T23:43:23.591+0700","caller":"app/app.go:228","msg":"gRPC Modular Services Registration Successfully Finished"}
+{"level":"INFO","ts":"2026-10-16T23:43:23.592+0700","caller":"server/main.go:129","msg":"gRPC Server listening","addr":":60051"}
+{"level":"INFO","ts":"2026-10-16T23:44:28.243+0700","caller":"server/main.go:62","msg":"Starting User Microservice (Go)"}
+{"level":"INFO","ts":"2026-10-16T23:44:28.388+0700","caller":"database/db.go:65","msg":"Auto-detected PostgreSQL max_connections setting","server_max_connections":100,"auto_pool_max_conns":35,"auto_pool_min_conns":8}
+{"level":"INFO","ts":"2026-10-16T23:44:28.388+0700","caller":"database/db.go:79","msg":"Successfully connected to Primary Database (GORM & SQLX Auto-Tuned)","max_conns":35,"min_conns":8}
+{"level":"INFO","ts":"2026-10-16T23:44:28.418+0700","caller":"database/db.go:105","msg":"Successfully connected to Logs Database (GORM & SQLX Auto-Tuned)"}
+{"level":"INFO","ts":"2026-10-16T23:44:28.419+0700","caller":"database/db.go:451","msg":"Verified Log & Audit Database tables (_ERPLoginFullLogs, _SysFullAuditLog)"}
+{"level":"INFO","ts":"2026-10-16T23:44:28.421+0700","caller":"database/db.go:352","msg":"Verified ERP Database tables (_ERPLanguage, _ERPDictionary, _ERPTblGrp, _ERPPermActions, _ERPSysAttrGroups, etc.)"}
+{"level":"INFO","ts":"2026-10-16T23:44:28.422+0700","caller":"database/db.go:123","msg":"Verified permission UserSeq columns"}
+{"level":"INFO","ts":"2026-10-16T23:44:28.422+0700","caller":"database/db.go:127","msg":"Verified extended permission schema"}
+{"level":"INFO","ts":"2026-10-16T23:44:28.475+0700","caller":"database/pgx.go:60","msg":"Successfully connected to Database via PGXPOOL (High Performance Mode)"}
+{"level":"INFO","ts":"2026-10-16T23:44:28.476+0700","caller":"worker/pool.go:38","msg":"Worker pool started","workers":200}
+{"level":"INFO","ts":"2026-10-16T23:44:28.476+0700","caller":"system/audit_log_service.go:78","msg":"[AUDIT LOG ENGINE] High-Concurrency Multi-Tier Kafka Engine active","kafka_brokers":"localhost:9092","topic_api":"erp.audit.api","topic_data":"erp.audit.datachange","api_channel_cap":50000,"data_channel_cap":50000,"log_db_target":"ERPSYSLOG (PostgreSQL)"}
+{"level":"INFO","ts":"2026-10-16T23:44:28.480+0700","caller":"app/app.go:228","msg":"gRPC Modular Services Registration Successfully Finished"}
+{"level":"INFO","ts":"2026-10-16T23:44:28.480+0700","caller":"server/main.go:129","msg":"gRPC Server listening","addr":":60051"}
+{"level":"INFO","ts":"2026-10-16T23:44:35.792+0700","caller":"server/main.go:62","msg":"Starting User Microservice (Go)"}
+{"level":"INFO","ts":"2026-10-16T23:44:35.913+0700","caller":"database/db.go:65","msg":"Auto-detected PostgreSQL max_connections setting","server_max_connections":100,"auto_pool_max_conns":35,"auto_pool_min_conns":8}
+{"level":"INFO","ts":"2026-10-16T23:44:35.924+0700","caller":"database/db.go:79","msg":"Successfully connected to Primary Database (GORM & SQLX Auto-Tuned)","max_conns":35,"min_conns":8}
+{"level":"INFO","ts":"2026-10-16T23:44:35.996+0700","caller":"database/db.go:105","msg":"Successfully connected to Logs Database (GORM & SQLX Auto-Tuned)"}
+{"level":"INFO","ts":"2026-10-16T23:44:36.000+0700","caller":"database/db.go:451","msg":"Verified Log & Audit Database tables (_ERPLoginFullLogs, _SysFullAuditLog)"}
+{"level":"INFO","ts":"2026-10-16T23:44:36.005+0700","caller":"database/db.go:352","msg":"Verified ERP Database tables (_ERPLanguage, _ERPDictionary, _ERPTblGrp, _ERPPermActions, _ERPSysAttrGroups, etc.)"}
+{"level":"INFO","ts":"2026-10-16T23:44:36.007+0700","caller":"database/db.go:123","msg":"Verified permission UserSeq columns"}
+{"level":"INFO","ts":"2026-10-16T23:44:36.009+0700","caller":"database/db.go:127","msg":"Verified extended permission schema"}
+{"level":"INFO","ts":"2026-10-16T23:44:36.179+0700","caller":"database/pgx.go:60","msg":"Successfully connected to Database via PGXPOOL (High Performance Mode)"}
+{"level":"INFO","ts":"2026-10-16T23:44:36.186+0700","caller":"worker/pool.go:38","msg":"Worker pool started","workers":200}
+{"level":"INFO","ts":"2026-10-16T23:44:36.196+0700","caller":"system/audit_log_service.go:78","msg":"[AUDIT LOG ENGINE] High-Concurrency Multi-Tier Kafka Engine active","kafka_brokers":"localhost:9092","topic_api":"erp.audit.api","topic_data":"erp.audit.datachange","api_channel_cap":50000,"data_channel_cap":50000,"log_db_target":"ERPSYSLOG (PostgreSQL)"}
+{"level":"INFO","ts":"2026-10-16T23:44:36.201+0700","caller":"app/app.go:228","msg":"gRPC Modular Services Registration Successfully Finished"}
+{"level":"INFO","ts":"2026-10-16T23:44:36.212+0700","caller":"server/main.go:129","msg":"gRPC Server listening","addr":":60051"}
+{"level":"INFO","ts":"2026-10-16T23:47:26.270+0700","caller":"server/main.go:62","msg":"Starting User Microservice (Go)"}
+{"level":"INFO","ts":"2026-10-16T23:47:26.483+0700","caller":"database/db.go:65","msg":"Auto-detected PostgreSQL max_connections setting","server_max_connections":100,"auto_pool_max_conns":35,"auto_pool_min_conns":8}
+{"level":"INFO","ts":"2026-10-16T23:47:26.484+0700","caller":"database/db.go:79","msg":"Successfully connected to Primary Database (GORM & SQLX Auto-Tuned)","max_conns":35,"min_conns":8}
+{"level":"INFO","ts":"2026-10-16T23:47:26.652+0700","caller":"database/db.go:105","msg":"Successfully connected to Logs Database (GORM & SQLX Auto-Tuned)"}
+{"level":"INFO","ts":"2026-10-16T23:47:26.655+0700","caller":"database/db.go:451","msg":"Verified Log & Audit Database tables (_ERPLoginFullLogs, _SysFullAuditLog)"}
+{"level":"INFO","ts":"2026-10-16T23:47:26.659+0700","caller":"database/db.go:352","msg":"Verified ERP Database tables (_ERPLanguage, _ERPDictionary, _ERPTblGrp, _ERPPermActions, _ERPSysAttrGroups, etc.)"}
+{"level":"INFO","ts":"2026-10-16T23:47:26.662+0700","caller":"database/db.go:123","msg":"Verified permission UserSeq columns"}
+{"level":"INFO","ts":"2026-10-16T23:47:26.664+0700","caller":"database/db.go:127","msg":"Verified extended permission schema"}
+{"level":"INFO","ts":"2026-10-16T23:47:26.752+0700","caller":"database/pgx.go:60","msg":"Successfully connected to Database via PGXPOOL (High Performance Mode)"}
+{"level":"INFO","ts":"2026-10-16T23:47:26.753+0700","caller":"worker/pool.go:38","msg":"Worker pool started","workers":200}
+{"level":"INFO","ts":"2026-10-16T23:47:26.756+0700","caller":"system/audit_log_service.go:78","msg":"[AUDIT LOG ENGINE] High-Concurrency Multi-Tier Kafka Engine active","kafka_brokers":"localhost:9092","topic_api":"erp.audit.api","topic_data":"erp.audit.datachange","api_channel_cap":50000,"data_channel_cap":50000,"log_db_target":"ERPSYSLOG (PostgreSQL)"}
+{"level":"INFO","ts":"2026-10-16T23:47:26.760+0700","caller":"app/app.go:228","msg":"gRPC Modular Services Registration Successfully Finished"}
+{"level":"INFO","ts":"2026-10-16T23:47:26.763+0700","caller":"server/main.go:129","msg":"gRPC Server listening","addr":":60051"}
+{"level":"INFO","ts":"2026-10-16T23:49:47.205+0700","caller":"server/main.go:62","msg":"Starting User Microservice (Go)"}
+{"level":"INFO","ts":"2026-10-16T23:49:47.244+0700","caller":"database/db.go:65","msg":"Auto-detected PostgreSQL max_connections setting","server_max_connections":100,"auto_pool_max_conns":35,"auto_pool_min_conns":8}
+{"level":"INFO","ts":"2026-10-16T23:49:47.244+0700","caller":"database/db.go:79","msg":"Successfully connected to Primary Database (GORM & SQLX Auto-Tuned)","max_conns":35,"min_conns":8}
+{"level":"INFO","ts":"2026-10-16T23:49:47.383+0700","caller":"database/db.go:105","msg":"Successfully connected to Logs Database (GORM & SQLX Auto-Tuned)"}
+{"level":"INFO","ts":"2026-10-16T23:49:47.384+0700","caller":"database/db.go:451","msg":"Verified Log & Audit Database tables (_ERPLoginFullLogs, _SysFullAuditLog)"}
+{"level":"INFO","ts":"2026-10-16T23:49:47.386+0700","caller":"database/db.go:352","msg":"Verified ERP Database tables (_ERPLanguage, _ERPDictionary, _ERPTblGrp, _ERPPermActions, _ERPSysAttrGroups, etc.)"}
+{"level":"INFO","ts":"2026-10-16T23:49:47.387+0700","caller":"database/db.go:123","msg":"Verified permission UserSeq columns"}
+{"level":"INFO","ts":"2026-10-16T23:49:47.388+0700","caller":"database/db.go:127","msg":"Verified extended permission schema"}
+{"level":"INFO","ts":"2026-10-16T23:49:47.466+0700","caller":"database/pgx.go:60","msg":"Successfully connected to Database via PGXPOOL (High Performance Mode)"}
+{"level":"INFO","ts":"2026-10-16T23:49:47.467+0700","caller":"worker/pool.go:38","msg":"Worker pool started","workers":200}
+{"level":"INFO","ts":"2026-10-16T23:49:47.468+0700","caller":"system/audit_log_service.go:78","msg":"[AUDIT LOG ENGINE] High-Concurrency Multi-Tier Kafka Engine active","kafka_brokers":"localhost:9092","topic_api":"erp.audit.api","topic_data":"erp.audit.datachange","api_channel_cap":50000,"data_channel_cap":50000,"log_db_target":"ERPSYSLOG (PostgreSQL)"}
+{"level":"INFO","ts":"2026-10-16T23:49:47.469+0700","caller":"app/app.go:228","msg":"gRPC Modular Services Registration Successfully Finished"}
+{"level":"INFO","ts":"2026-10-16T23:49:47.469+0700","caller":"server/main.go:129","msg":"gRPC Server listening","addr":":60051"}
+{"level":"INFO","ts":"2026-10-16T23:54:06.663+0700","caller":"server/main.go:62","msg":"Starting User Microservice (Go)"}
+{"level":"INFO","ts":"2026-10-16T23:54:06.713+0700","caller":"database/db.go:65","msg":"Auto-detected PostgreSQL max_connections setting","server_max_connections":100,"auto_pool_max_conns":35,"auto_pool_min_conns":8}
+{"level":"INFO","ts":"2026-10-16T23:54:06.713+0700","caller":"database/db.go:79","msg":"Successfully connected to Primary Database (GORM & SQLX Auto-Tuned)","max_conns":35,"min_conns":8}
+{"level":"INFO","ts":"2026-10-16T23:54:06.856+0700","caller":"database/db.go:105","msg":"Successfully connected to Logs Database (GORM & SQLX Auto-Tuned)"}
+{"level":"INFO","ts":"2026-10-16T23:54:06.858+0700","caller":"database/db.go:451","msg":"Verified Log & Audit Database tables (_ERPLoginFullLogs, _SysFullAuditLog)"}
+{"level":"INFO","ts":"2026-10-16T23:54:06.860+0700","caller":"database/db.go:352","msg":"Verified ERP Database tables (_ERPLanguage, _ERPDictionary, _ERPTblGrp, _ERPPermActions, _ERPSysAttrGroups, etc.)"}
+{"level":"INFO","ts":"2026-10-16T23:54:06.862+0700","caller":"database/db.go:123","msg":"Verified permission UserSeq columns"}
+{"level":"INFO","ts":"2026-10-16T23:54:06.864+0700","caller":"database/db.go:127","msg":"Verified extended permission schema"}
+{"level":"INFO","ts":"2026-10-16T23:54:07.010+0700","caller":"database/pgx.go:60","msg":"Successfully connected to Database via PGXPOOL (High Performance Mode)"}
+{"level":"INFO","ts":"2026-10-16T23:54:07.011+0700","caller":"worker/pool.go:38","msg":"Worker pool started","workers":200}
+{"level":"INFO","ts":"2026-10-16T23:54:07.012+0700","caller":"system/audit_log_service.go:78","msg":"[AUDIT LOG ENGINE] High-Concurrency Multi-Tier Kafka Engine active","kafka_brokers":"localhost:9092","topic_api":"erp.audit.api","topic_data":"erp.audit.datachange","api_channel_cap":50000,"data_channel_cap":50000,"log_db_target":"ERPSYSLOG (PostgreSQL)"}
+{"level":"INFO","ts":"2026-10-16T23:54:07.013+0700","caller":"app/app.go:228","msg":"gRPC Modular Services Registration Successfully Finished"}
+{"level":"INFO","ts":"2026-10-16T23:54:07.014+0700","caller":"server/main.go:129","msg":"gRPC Server listening","addr":":60051"}
+{"level":"INFO","ts":"2026-10-16T23:55:02.222+0700","caller":"server/main.go:62","msg":"Starting User Microservice (Go)"}
+{"level":"INFO","ts":"2026-10-16T23:55:02.265+0700","caller":"database/db.go:65","msg":"Auto-detected PostgreSQL max_connections setting","server_max_connections":100,"auto_pool_max_conns":35,"auto_pool_min_conns":8}
+{"level":"INFO","ts":"2026-10-16T23:55:02.265+0700","caller":"database/db.go:79","msg":"Successfully connected to Primary Database (GORM & SQLX Auto-Tuned)","max_conns":35,"min_conns":8}
+{"level":"INFO","ts":"2026-10-16T23:55:02.403+0700","caller":"database/db.go:105","msg":"Successfully connected to Logs Database (GORM & SQLX Auto-Tuned)"}
+{"level":"INFO","ts":"2026-10-16T23:55:02.405+0700","caller":"database/db.go:451","msg":"Verified Log & Audit Database tables (_ERPLoginFullLogs, _SysFullAuditLog)"}
+{"level":"INFO","ts":"2026-10-16T23:55:02.407+0700","caller":"database/db.go:352","msg":"Verified ERP Database tables (_ERPLanguage, _ERPDictionary, _ERPTblGrp, _ERPPermActions, _ERPSysAttrGroups, etc.)"}
+{"level":"INFO","ts":"2026-10-16T23:55:02.409+0700","caller":"database/db.go:123","msg":"Verified permission UserSeq columns"}
+{"level":"INFO","ts":"2026-10-16T23:55:02.409+0700","caller":"database/db.go:127","msg":"Verified extended permission schema"}
+{"level":"INFO","ts":"2026-10-16T23:55:02.470+0700","caller":"database/pgx.go:60","msg":"Successfully connected to Database via PGXPOOL (High Performance Mode)"}
+{"level":"INFO","ts":"2026-10-16T23:55:02.471+0700","caller":"worker/pool.go:38","msg":"Worker pool started","workers":200}
+{"level":"INFO","ts":"2026-10-16T23:55:02.472+0700","caller":"system/audit_log_service.go:78","msg":"[AUDIT LOG ENGINE] High-Concurrency Multi-Tier Kafka Engine active","kafka_brokers":"localhost:9092","topic_api":"erp.audit.api","topic_data":"erp.audit.datachange","api_channel_cap":50000,"data_channel_cap":50000,"log_db_target":"ERPSYSLOG (PostgreSQL)"}
+{"level":"INFO","ts":"2026-10-16T23:55:02.475+0700","caller":"app/app.go:228","msg":"gRPC Modular Services Registration Successfully Finished"}
+{"level":"INFO","ts":"2026-10-16T23:55:02.475+0700","caller":"server/main.go:129","msg":"gRPC Server listening","addr":":60051"}
+{"level":"INFO","ts":"2026-10-16T23:56:04.730+0700","caller":"server/main.go:62","msg":"Starting User Microservice (Go)"}
+{"level":"INFO","ts":"2026-10-16T23:56:04.837+0700","caller":"database/db.go:65","msg":"Auto-detected PostgreSQL max_connections setting","server_max_connections":100,"auto_pool_max_conns":35,"auto_pool_min_conns":8}
+{"level":"INFO","ts":"2026-10-16T23:56:04.838+0700","caller":"database/db.go:79","msg":"Successfully connected to Primary Database (GORM & SQLX Auto-Tuned)","max_conns":35,"min_conns":8}
+{"level":"INFO","ts":"2026-10-16T23:56:04.910+0700","caller":"database/db.go:105","msg":"Successfully connected to Logs Database (GORM & SQLX Auto-Tuned)"}
+{"level":"INFO","ts":"2026-10-16T23:56:04.916+0700","caller":"database/db.go:451","msg":"Verified Log & Audit Database tables (_ERPLoginFullLogs, _SysFullAuditLog)"}
+{"level":"INFO","ts":"2026-10-16T23:56:04.921+0700","caller":"database/db.go:352","msg":"Verified ERP Database tables (_ERPLanguage, _ERPDictionary, _ERPTblGrp, _ERPPermActions, _ERPSysAttrGroups, etc.)"}
+{"level":"INFO","ts":"2026-10-16T23:56:04.924+0700","caller":"database/db.go:123","msg":"Verified permission UserSeq columns"}
+{"level":"INFO","ts":"2026-10-16T23:56:04.929+0700","caller":"database/db.go:127","msg":"Verified extended permission schema"}
+{"level":"INFO","ts":"2026-10-16T23:56:05.011+0700","caller":"database/pgx.go:60","msg":"Successfully connected to Database via PGXPOOL (High Performance Mode)"}
+{"level":"INFO","ts":"2026-10-16T23:56:05.013+0700","caller":"worker/pool.go:38","msg":"Worker pool started","workers":200}
+{"level":"INFO","ts":"2026-10-16T23:56:05.015+0700","caller":"system/audit_log_service.go:78","msg":"[AUDIT LOG ENGINE] High-Concurrency Multi-Tier Kafka Engine active","kafka_brokers":"localhost:9092","topic_api":"erp.audit.api","topic_data":"erp.audit.datachange","api_channel_cap":50000,"data_channel_cap":50000,"log_db_target":"ERPSYSLOG (PostgreSQL)"}
+{"level":"INFO","ts":"2026-10-16T23:56:05.019+0700","caller":"app/app.go:228","msg":"gRPC Modular Services Registration Successfully Finished"}
+{"level":"INFO","ts":"2026-10-16T23:56:05.026+0700","caller":"server/main.go:129","msg":"gRPC Server listening","addr":":60051"}
+{"level":"INFO","ts":"2026-10-16T23:58:52.803+0700","caller":"server/main.go:62","msg":"Starting User Microservice (Go)"}
+{"level":"INFO","ts":"2026-10-16T23:58:52.843+0700","caller":"database/db.go:65","msg":"Auto-detected PostgreSQL max_connections setting","server_max_connections":100,"auto_pool_max_conns":35,"auto_pool_min_conns":8}
+{"level":"INFO","ts":"2026-10-16T23:58:52.843+0700","caller":"database/db.go:79","msg":"Successfully connected to Primary Database (GORM & SQLX Auto-Tuned)","max_conns":35,"min_conns":8}
+{"level":"INFO","ts":"2026-10-16T23:58:52.873+0700","caller":"database/db.go:105","msg":"Successfully connected to Logs Database (GORM & SQLX Auto-Tuned)"}
+{"level":"INFO","ts":"2026-10-16T23:58:52.875+0700","caller":"database/db.go:451","msg":"Verified Log & Audit Database tables (_ERPLoginFullLogs, _SysFullAuditLog)"}
+{"level":"INFO","ts":"2026-10-16T23:58:52.877+0700","caller":"database/db.go:352","msg":"Verified ERP Database tables (_ERPLanguage, _ERPDictionary, _ERPTblGrp, _ERPPermActions, _ERPSysAttrGroups, etc.)"}
+{"level":"INFO","ts":"2026-10-16T23:58:52.878+0700","caller":"database/db.go:123","msg":"Verified permission UserSeq columns"}
+{"level":"INFO","ts":"2026-10-16T23:58:52.879+0700","caller":"database/db.go:127","msg":"Verified extended permission schema"}
+{"level":"INFO","ts":"2026-10-16T23:58:52.953+0700","caller":"database/pgx.go:60","msg":"Successfully connected to Database via PGXPOOL (High Performance Mode)"}
+{"level":"INFO","ts":"2026-10-16T23:58:52.955+0700","caller":"worker/pool.go:38","msg":"Worker pool started","workers":200}
+{"level":"INFO","ts":"2026-10-16T23:58:52.955+0700","caller":"system/audit_log_service.go:78","msg":"[AUDIT LOG ENGINE] High-Concurrency Multi-Tier Kafka Engine active","kafka_brokers":"localhost:9092","topic_api":"erp.audit.api","topic_data":"erp.audit.datachange","api_channel_cap":50000,"data_channel_cap":50000,"log_db_target":"ERPSYSLOG (PostgreSQL)"}
+{"level":"INFO","ts":"2026-10-16T23:58:52.958+0700","caller":"app/app.go:228","msg":"gRPC Modular Services Registration Successfully Finished"}
+{"level":"INFO","ts":"2026-10-16T23:58:52.958+0700","caller":"server/main.go:129","msg":"gRPC Server listening","addr":":60051"}
+{"level":"INFO","ts":"2026-10-16T23:59:19.495+0700","caller":"server/main.go:62","msg":"Starting User Microservice (Go)"}
+{"level":"INFO","ts":"2026-10-16T23:59:19.643+0700","caller":"database/db.go:65","msg":"Auto-detected PostgreSQL max_connections setting","server_max_connections":100,"auto_pool_max_conns":35,"auto_pool_min_conns":8}
+{"level":"INFO","ts":"2026-10-16T23:59:19.643+0700","caller":"database/db.go:79","msg":"Successfully connected to Primary Database (GORM & SQLX Auto-Tuned)","max_conns":35,"min_conns":8}
+{"level":"INFO","ts":"2026-10-16T23:59:19.673+0700","caller":"database/db.go:105","msg":"Successfully connected to Logs Database (GORM & SQLX Auto-Tuned)"}
+{"level":"INFO","ts":"2026-10-16T23:59:19.675+0700","caller":"database/db.go:451","msg":"Verified Log & Audit Database tables (_ERPLoginFullLogs, _SysFullAuditLog)"}
+{"level":"INFO","ts":"2026-10-16T23:59:19.677+0700","caller":"database/db.go:352","msg":"Verified ERP Database tables (_ERPLanguage, _ERPDictionary, _ERPTblGrp, _ERPPermActions, _ERPSysAttrGroups, etc.)"}
+{"level":"INFO","ts":"2026-10-16T23:59:19.678+0700","caller":"database/db.go:123","msg":"Verified permission UserSeq columns"}
+{"level":"INFO","ts":"2026-10-16T23:59:19.680+0700","caller":"database/db.go:127","msg":"Verified extended permission schema"}
+{"level":"INFO","ts":"2026-10-16T23:59:19.757+0700","caller":"database/pgx.go:60","msg":"Successfully connected to Database via PGXPOOL (High Performance Mode)"}
+{"level":"INFO","ts":"2026-10-16T23:59:19.757+0700","caller":"worker/pool.go:38","msg":"Worker pool started","workers":200}
+{"level":"INFO","ts":"2026-10-16T23:59:19.758+0700","caller":"system/audit_log_service.go:78","msg":"[AUDIT LOG ENGINE] High-Concurrency Multi-Tier Kafka Engine active","kafka_brokers":"localhost:9092","topic_api":"erp.audit.api","topic_data":"erp.audit.datachange","api_channel_cap":50000,"data_channel_cap":50000,"log_db_target":"ERPSYSLOG (PostgreSQL)"}
+{"level":"INFO","ts":"2026-10-16T23:59:19.759+0700","caller":"app/app.go:228","msg":"gRPC Modular Services Registration Successfully Finished"}
+{"level":"INFO","ts":"2026-10-16T23:59:19.759+0700","caller":"server/main.go:129","msg":"gRPC Server listening","addr":":60051"}

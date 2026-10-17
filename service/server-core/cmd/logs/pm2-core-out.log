@@ -1,0 +1,16 @@
+2026-10-08T19:38:33: 2026-10-08T19:38:33.318+0700	INFO	server/main.go:62	Starting User Microservice (Go)
+2026-10-08T19:38:33: 
+2026-10-08T19:38:33: 2026/10/08 19:38:33 [32mC:/Users/tuanhoang/Desktop/Gshub/service/server-core/internal/database/db.go:45
+2026-10-08T19:38:33: [0m[33m[0.503ms] [34;1m[rows:1][0m SHOW max_connections
+2026-10-08T19:38:33: 2026-10-08T19:38:33.358+0700	INFO	database/db.go:64	Auto-detected PostgreSQL max_connections setting	{"server_max_connections": 100, "auto_pool_max_conns": 35, "auto_pool_min_conns": 8}
+2026-10-08T19:38:33: 2026-10-08T19:38:33.358+0700	INFO	database/db.go:78	Successfully connected to Primary Database (GORM & SQLX Auto-Tuned)	{"max_conns": 35, "min_conns": 8}
+2026-10-08T19:38:33: 2026-10-08T19:38:33.396+0700	INFO	database/db.go:104	Successfully connected to Logs Database (GORM & SQLX Auto-Tuned)
+2026-10-08T19:38:33: 2026-10-08T19:38:33.399+0700	INFO	database/db.go:215	Verified Log & Audit Database tables (_ERPLoginFullLogs, _SysFullAuditLog)
+2026-10-08T19:38:33: 2026-10-08T19:38:33.552+0700	INFO	database/pgx.go:60	Successfully connected to Database via PGXPOOL (High Performance Mode)
+2026-10-08T19:38:33: 2026-10-08T19:38:33.553+0700	INFO	worker/pool.go:38	Worker pool started	{"workers": 200}
+2026-10-08T19:38:33: 2026-10-08T19:38:33.554+0700	INFO	system/audit_log_service.go:78	[AUDIT LOG ENGINE] High-Concurrency Multi-Tier Kafka Engine active	{"kafka_brokers": "localhost:9092", "topic_api": "erp.audit.api", "topic_data": "erp.audit.datachange", "api_channel_cap": 50000, "data_channel_cap": 50000, "log_db_target": "ERPSYSLOG (PostgreSQL)"}
+2026-10-08T19:38:33: 2026-10-08T19:38:33.556+0700	FATAL	server/main.go:94	Failed to listen	{"error": "listen tcp :5051: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+2026-10-08T19:38:33: main.main
+2026-10-08T19:38:33: 	C:/Users/tuanhoang/Desktop/Gshub/service/server-core/cmd/server/main.go:94
+2026-10-08T19:38:33: runtime.main
+2026-10-08T19:38:33: 	C:/Program Files/Go/src/runtime/proc.go:285

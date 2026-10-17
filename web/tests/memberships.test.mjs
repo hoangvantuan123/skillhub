@@ -1,0 +1,4 @@
+import {test} from 'node:test';import assert from 'node:assert/strict';import{membershipRows}from'../src/features/security/memberships.js';
+const groups=[{key:'a',label:'Học viên',enabled:true},{key:'b',label:'Biên soạn',enabled:false}];
+const users=[{id:'1',name:'One',enabled:true,groups:['a'],manual_groups:[]},{id:'2',name:'Two',enabled:true,groups:['a'],manual_groups:['a','b']},{id:'3',name:'Three',enabled:false,groups:[],manual_groups:[]}];
+test('membership table includes real unassigned users and separates automatic/direct/disabled groups',()=>{const rows=membershipRows(users,groups);assert.equal(rows.length,3);assert.match(rows[0].origin,/Theo tổ chức/);assert.match(rows[1].origin,/Gán trực tiếp/);assert.match(rows[1].origin,/tạm ngưng/);assert.equal(rows[2].groupNames,'Chưa gán nhóm');assert.equal(membershipRows(users,groups,'b').length,1)});

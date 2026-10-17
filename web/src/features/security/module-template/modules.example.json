@@ -1,0 +1,10 @@
+{
+  "modules": [
+    {
+      "key": "training",
+      "label": "Đào tạo",
+      "enabled": true,
+      "actions": ["view", "create", "update", "delete", "import", "export", "approve", "publish"]
+    }
+  ]
+}
